@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--Searchs-->
+        <record id="view_search_memorandum" model="ir.ui.view">
+            <field name="name">view_search_memorandum</field>
+            <field name="model">hr.employee.memorandum</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                    <group expand="0" string="Agrupar por">
+                        <filter string="Documento"
+                                name="group_by_document_select" domain="[]"
+                                context="{'group_by':'document_select'}"/>
+                        <separator/>
+                        <filter string="Fecha"
+                                name="groupby_date" domain="[]"
+                                context="{'group_by':'date'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!--Actions-->
+        <record id="action_employee_memorandum" model="ir.actions.act_window">
+            <field name="name">Memorándums</field>
+            <field name="res_model">hr.employee.memorandum</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{
+                'search_default_employee_id': [active_id],
+                'default_employee_id': active_id,
+                'search_default_group_by_document_select': 1
+                }
+            </field>
+        </record>
+
+        <!--Views-->
+        <record id="view_tree_memorandum" model="ir.ui.view">
+            <field name="name">view_tree_memorandum</field>
+            <field name="model">hr.employee.memorandum</field>
+            <field name="arch" type="xml">
+                <tree decoration-muted="state=='cancel'"
+                      decoration-bf="state == 'validate'"
+                      decoration-success="state == 'validate'"
+                >
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="employee_id"/>
+                    <field name="sanction"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_form_memorandum" model="ir.ui.view">
+            <field name="name">view_form_memorandum</field>
+            <field name="model">hr.employee.memorandum</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="action_print"
+                                string="Imprimir"
+                                type="object"
+                                class="oe_highlight"/>
+                        <button name="action_validate"
+                                class="oe_highlight"
+                                string="Validar"
+                                states="draft"
+                                type="object"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title" attrs="{'invisible': [('state','=', 'draft')]}">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group col="4">
+                            <field name="date"/>
+                            <field name="employee_id" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="document_select"/>
+                            <field name="appearance_id" context="{'default_document_select': document_select}"
+                                   domain="[('document_select', '=', document_select)]"/>
+                            <field name="type_id" context="{'default_appearance_id': appearance_id}"
+                                   domain="[('document_select', '=', document_select), ('appearance_id', '=', appearance_id)]"/>
+                            <field name="signature_user" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="sanction"/>
+                            <field name="comment_sanction" placeholder="p.e Por atrasos consecutivos"
+                                   attrs="{'invisible':[('sanction','!=', True)], 'required': [('sanction','=', True)]}"/>
+                            <field name="file"
+                                   filename="file_name"
+                                   widget="binary"/>
+                            <field name="file_name" invisible="1"/>
+                        </group>
+                        <group string="Notas o comentarios">
+                            <field name="comment" nolabel="1"
+                                   placeholder="p.e Describir de manera clara y concisa la falta cometida, incluir fechas, lugares, y todo detalle importante que deje constancia clara de la falta."/>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

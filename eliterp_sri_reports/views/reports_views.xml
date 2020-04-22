@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <menuitem id="menu_sri_reports"
+                  name="SRI"
+                  parent="eliterp_account_reports.menu_accounting_reports"
+                  sequence='25'/>
+
+        <record id="action_ats_report" model="ir.actions.act_window">
+            <field name="name">ATS</field>
+            <field name="res_model">sri.ats</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="eliterp_sri_reports.view_form_ats_wizard"/>
+            <field name="target">new</field>
+        </record>
+        <menuitem id="menu_ats_report"
+                  parent="menu_sri_reports"
+                  action="action_ats_report"
+                  sequence="1"/>
+
+        <record id="action_taxes_summary_report" model="ir.actions.act_window">
+            <field name="name">Resumen de impuestos</field>
+            <field name="res_model">sri.retention.summary</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="eliterp_sri_reports.view_form_retention_summary_report_wizard"/>
+            <field name="target">new</field>
+        </record>
+        <menuitem id="menu_taxes_summary_report"
+                  parent="menu_sri_reports"
+                  action="action_taxes_summary_report"
+                  sequence="5"/>
+    </data>
+</odoo>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--Root-->
+        <menuitem id="point_of_sale.menu_point_root"
+                  name="Punto de Venta"
+                  groups="point_of_sale.group_pos_manager,point_of_sale.group_pos_user"
+                  web_icon="eliterp_point_of_sale,static/description/icon.png"
+                  sequence="20"/>
+
+    </data>
+</odoo>

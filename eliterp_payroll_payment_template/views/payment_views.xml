@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_form_payments_payable_bank_template" model="ir.ui.view">
+        <field name="name">view_form_payments_payable_bank_template</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="eliterp_payment.view_form_payments_payable"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_button_cancel']" position="before">
+                <field name="exist_template" invisible="1"/>
+                <button type="object" name="action_payment_template"
+                        attrs="{'invisible': ['|', ('state', '!=', 'posted'), ('exist_template', '=', False)]}"
+                        string="Plantilla para banco"/>
+            </xpath>
+            <xpath expr="//field[@name='transfer_code']" position="before">
+                <field name="template_binary" filename="template_filename"
+                       attrs="{'invisible': [('template_binary', '=', False)]}"
+                       widget="binary"/>
+                <field name="template_filename" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

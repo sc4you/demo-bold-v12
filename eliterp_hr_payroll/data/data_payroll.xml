@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <!--Delete data-->
+        <!--Structure-->
+        <delete model="hr.payroll.structure" id="hr_payroll.structure_base"/>
+
+        <!--Rules-->
+        <delete model="hr.salary.rule" id="hr_payroll.hr_rule_basic"/>
+        <delete model="hr.salary.rule" id="hr_payroll.hr_rule_taxable"/>
+        <delete model="hr.salary.rule" id="hr_payroll.hr_rule_net"/>
+
+        <!--Categorys-->
+        <delete model="hr.salary.rule.category" id="hr_payroll.BASIC"/>
+        <delete model="hr.salary.rule.category" id="hr_payroll.ALW"/>
+        <delete model="hr.salary.rule.category" id="hr_payroll.GROSS"/>
+        <delete model="hr.salary.rule.category" id="hr_payroll.DED"/>
+        <delete model="hr.salary.rule.category" id="hr_payroll.NET"/>
+        <delete model="hr.salary.rule.category" id="hr_payroll.COMP"/>
+
+        <!--Contribution-->
+        <delete model="hr.contribution.register" id="hr_payroll.contrib_register_employees"/>
+        <!--Create Data-->
+        <!--Partner's IESS-->
+        <record id="partner_iess" model="res.partner">
+            <field name="name">INSTITUTO ECUATORIANO DE SEGURIDAD SOCIAL IESS</field>
+            <field name="country_id" ref="base.ec"/>
+            <field name="state_id" ref="eliterp_base.res_country_state_17"/>
+            <field name="street">AV. 10 DE AGOSTO</field>
+            <field name="street2">BOGÓTA</field>
+            <field name="phone">022235900</field>
+            <field name="type_documentation">0</field>
+            <field name="documentation_number">1760004650001</field>
+            <field name="website">https://www.iess.gob.ec/</field>
+            <field name="supplier" eval="True"/>
+            <field name="customer" eval="False"/>
+            <field name="image" type="base64" file="eliterp_hr_payroll/static/img/partner_iess.png"/>
+        </record>
+
+
+        <!--Rule Category-->
+        <record id="salary_rule_category_1" model="hr.salary.rule.category">
+            <field name="name">INGRESOS (GENERA BENEFICIOS SOCIALES)</field>
+            <field name="code">ING</field>
+            <field name="note">Todos los montos qué generar aumento del neto a recibir en rol.</field>
+        </record>
+        <record id="salary_rule_category_2" model="hr.salary.rule.category">
+            <field name="name">INGRESOS (SIN BENEFICIOS SOCIALES)</field>
+            <field name="code">ING_SBS</field>
+            <field name="note">Todos los montos qué generar aumento del neto a recibir en rol
+                pero no generan beneficios sociales.
+            </field>
+        </record>
+        <record id="salary_rule_category_3" model="hr.salary.rule.category">
+            <field name="name">EGRESOS</field>
+            <field name="code">EGR</field>
+            <field name="note">Todos los montos qué generar disminución del neto a recibir en rol.</field>
+        </record>
+        <record id="salary_rule_category_4" model="hr.salary.rule.category">
+            <field name="name">PROVISIÓN (CUENTAS POR PAGAR DE LA COMPAÑÍA)</field>
+            <field name="code">PRO</field>
+            <field name="note">Todos los montos qué se guardan cómo cuentas por pagar para la compañía (Ej. Décimo
+                Tercer Sueldo).
+            </field>
+        </record>
+        <record id="salary_rule_category_5" model="hr.salary.rule.category">
+            <field name="name">SUBTOTALES</field>
+            <field name="code">SUB</field>
+            <field name="note">Suma de diferentes montos.</field>
+        </record>
+
+        <!--Contribution_Register-->
+        <record id="contribution_register_1" model="hr.contribution.register">
+            <field name="name">IMPUESTO A LA RENTA RETENIDO A EMPLEADOS</field>
+            <field name="partner_id" ref="eliterp_sri.partner_sri"/>
+            <field name="note">El valor será cancelado por la compañía dentro del formulario 103.
+            </field>
+        </record>
+        <record id="contribution_register_2" model="hr.contribution.register">
+            <field name="name">APORTE PERSONAL A PAGAR AL IESS</field>
+            <field name="partner_id" ref="partner_iess"/>
+            <field name="note">Registro usado para el aporte Personal del IESS, nótese que se debita del empleado y se
+                acredita al IESS.
+            </field>
+        </record>
+        <record id="contribution_register_3" model="hr.contribution.register">
+            <field name="name">APORTE PATRONAL A PAGAR AL IESS</field>
+            <field name="partner_id" ref="partner_iess"/>
+            <field name="note">Registro usado para el aporte Patronal del IESS.</field>
+        </record>
+        <record id="contribution_register_4" model="hr.contribution.register">
+            <field name="name">FONDOS DE RESERVA POR PAGAR AL IESS</field>
+            <field name="partner_id" ref="partner_iess"/>
+        </record>
+        <record id="contribution_register_5" model="hr.contribution.register">
+            <field name="name">PRÉSTAMO QUIROGRAFARIO POR PAGAR AL IESS</field>
+            <field name="partner_id" ref="partner_iess"/>
+        </record>
+        <record id="contribution_register_6" model="hr.contribution.register">
+            <field name="name">PRÉSTAMO HIPOTECARIO POR PAGAR AL IESS</field>
+            <field name="partner_id" ref="partner_iess"/>
+        </record>
+
+        <!--Rule-->
+        <record id="salary_rule_1" model="hr.salary.rule">
+            <field name="category_id" ref="salary_rule_category_1"/>
+            <field name="sequence">11</field>
+            <field name="name">SUELDO</field>
+            <field name="code">SUEL</field>
+            <field name="amount_select">code</field>
+            <field name="account_debit" ref="eliterp_chart_template.1_account_template_502020101" />
+            <field name="amount_python_compute">result = (contract.wage * payslip.worked_days) / 30</field>
+        </record>
+        <record id="salary_rule_2" model="hr.salary.rule">
+            <field name="category_id" ref="salary_rule_category_1"/>
+            <field name="sequence">12</field>
+            <field name="name">HORAS EXTRAS EXTRAORDINARIAS (50%)</field>
+            <field name="code">HEEX</field>
+            <field eval="[(0, 0, {'name': 'HORAS EXTRAS 50%', 'code': 'HEEX'})]" name="input_ids"/>
+            <field name="condition_select">python</field>
+            <field name="account_debit" ref="eliterp_chart_template.1_account_template_502020102"/>
+            <field name="condition_python">
+if sum(line.amount for line in inputs.HEEX) > 0:
+    result = True
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = round(sum(line.amount for line in inputs.HEEX) * 1.5 * contract.wage / 240, 2)</field>
+        </record>
+        <record id="salary_rule_3" model="hr.salary.rule">
+            <field name="category_id" ref="salary_rule_category_1"/>
+            <field name="sequence">13</field>
+            <field name="name">HORAS EXTRAS SUPLEMENTARIAS (100%)</field>
+            <field name="code">HESU</field>
+            <field eval="[(0, 0, {'name': 'HORAS EXTRAS 100%', 'code': 'HESU'})]" name="input_ids"/>
+            <field name="condition_select">python</field>
+            <field name="account_debit" ref="eliterp_chart_template.1_account_template_502020102"/>
+            <field name="condition_python">
+if sum(line.amount for line in inputs.HESU) > 0:
+    result = True
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = round(sum(line.amount for line in inputs.HESU) * 2 * contract.wage / 240, 2)</field>
+        </record>
+        <record id="salary_rule_4" model="hr.salary.rule">
+            <field name="category_id" ref="salary_rule_category_1"/>
+            <field name="sequence">14</field>
+            <field name="name">BONIFICACIÓN</field>
+            <field name="code">BONO</field>
+            <field eval="[(0, 0, {'name': 'BONO', 'code': 'BONO'})]" name="input_ids"/>
+            <field name="condition_select">python</field>
+            <field name="account_debit" ref="eliterp_chart_template.1_account_template_502022711"/>
+            <field name="condition_python">
+if sum(line.amount for line in inputs.BONO) > 0:
+    result = True
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = sum(line.amount for line in inputs.BONO)</field>
+        </record>
+
+        <record id="salary_rule_6" model="hr.salary.rule">
+            <field name="category_id" ref="salary_rule_category_2"/>
+            <field name="sequence">21</field>
+            <field name="name">DÉCIMO TERCERO MENSUAL</field>
+            <field name="code">DTER</field>
+            <field name="condition_select">python</field>
+            <field name="account_debit" ref="eliterp_chart_template.1_account_template_502020301"/>
+            <field name="condition_python">
+if employee.accumulate_tenths == 'no':
+    result = True
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = (categories.ING * 8.3333) / 100</field>
+        </record>
+        <record id="salary_rule_7" model="hr.salary.rule">
+            <field name="category_id" ref="salary_rule_category_2"/>
+            <field name="sequence">22</field>
+            <field name="name">DÉCIMO CUARTO MENSUAL</field>
+            <field name="code">DCUA</field>
+            <field name="condition_select">python</field>
+            <field name="account_debit" ref="eliterp_chart_template.1_account_template_502020302"/>
+            <field name="condition_python">
+if employee.accumulate_tenths == 'no':
+    result = True
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = (payslip.minimum_wage / 360) * payslip.worked_days</field>
+        </record>
+        <record id="salary_rule_8" model="hr.salary.rule">
+            <field name="category_id" ref="salary_rule_category_2"/>
+            <field name="sequence">23</field>
+            <field name="name">FONDOS DE RESERVA MENSUAL</field>
+            <field name="code">FRES</field>
+            <field name="condition_select">python</field>
+            <field name="account_debit" ref="eliterp_chart_template.1_account_template_502020203"/>
+            <field name="condition_python">
+if employee.accumulate_reserve_funds == 'no' and payslip.number_of_months >= 12:
+    result = True
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+result = (categories.ING * payslip.payment_days_reserve_funds / 30) * 0.0833
+            </field>
+        </record>
+        <record id="salary_rule_5" model="hr.salary.rule">
+            <field name="category_id" ref="salary_rule_category_2"/>
+            <field name="sequence">24</field>
+            <field name="name">OTROS INGRESOS</field>
+            <field name="code">OING</field>
+            <field name="condition_select">python</field>
+            <field name="account_debit" ref="eliterp_chart_template.1_account_template_502022712"/>
+            <field eval="[(0, 0, {'name': 'INGRESO', 'code': 'OING'})]" name="input_ids"/>
+            <field name="condition_python">
+if sum(line.amount for line in inputs.OING) > 0:
+    result = True
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+result = sum(line.amount for line in inputs.OING)
+            </field>
+        </record>
+
+
+        <record id="salary_rule_9" model="hr.salary.rule">
+            <field name="category_id" ref="salary_rule_category_3"/>
+            <field name="sequence">31</field>
+            <field name="name">ANTICIPO DE QUINCENA</field>
+            <field name="code">ADQU</field>
+            <field name="amount_select">code</field>
+            <field name="account_credit" ref="eliterp_chart_template.1_account_template_10104040102"/>
+            <field name="amount_python_compute">result = payslip.amount_advance</field>
+        </record>
+        <record id="salary_rule_10" model="hr.salary.rule">
+            <field name="category_id" ref="salary_rule_category_3"/>
+            <field name="sequence">32</field>
+            <field name="name">IESS PERSONAL 9.45%</field>
+            <field name="code">IESS_9.45</field>
+            <field name="amount_select">percentage</field>
+            <field name="amount_percentage_base">categories.ING</field>
+            <field name="account_credit" ref="eliterp_chart_template.1_account_template_201070301"/>
+            <field name="amount_percentage">9.45</field>
+            <field name="register_id" ref="contribution_register_2"/>
+        </record>
+        <record id="salary_rule_11" model="hr.salary.rule">
+            <field name="category_id" ref="salary_rule_category_3"/>
+            <field name="sequence">33</field>
+            <field name="name">PRÉSTAMOS QUIROGRAFARIOS A PAGAR AL IESS</field>
+            <field name="code">PRES_QUIR</field>
+            <field name="account_credit" ref="eliterp_chart_template.1_account_template_201070303"/>
+            <field eval="[(0, 0, {'name': 'PRÉSTAMOS QUIROGRAFARIOS', 'code': 'PRES_QUIR'})]" name="input_ids"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">
+if sum(line.amount for line in inputs.PRES_QUIR) > 0:
+    result = True
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = sum(line.amount for line in inputs.PRES_QUIR)</field>
+            <field name="register_id" ref="contribution_register_5"/>
+        </record>
+        <record id="salary_rule_12" model="hr.salary.rule">
+            <field name="category_id" ref="salary_rule_category_3"/>
+            <field name="sequence">34</field>
+            <field name="name">PRÉSTAMOS HIPOTECARIOS A PAGAR AL IESS</field>
+            <field name="code">PRES_HIPO</field>
+            <field name="account_credit" ref="eliterp_chart_template.1_account_template_201070304"/>
+            <field eval="[(0, 0, {'name': 'PRÉSTAMOS HIPOTECARIOS', 'code': 'PRES_HIPO'})]" name="input_ids"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">
+if sum(line.amount for line in inputs.PRES_HIPO) > 0:
+    result = True
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = sum(line.amount for line in inputs.PRES_HIPO)</field>
+            <field name="register_id" ref="contribution_register_6"/>
+        </record>
+        <record id="salary_rule_13" model="hr.salary.rule">
+            <field name="category_id" ref="salary_rule_category_3"/>
+            <field name="sequence">35</field>
+            <field name="name">FALTAS NO JUSTIFICADAS</field>
+            <field name="code">FALT</field>
+            <field name="account_credit" ref="eliterp_chart_template.1_account_template_40301010902"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">
+if payslip.number_absences > 0:
+    result = True
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+result = round(((contract.wage / payslip.worked_days) * payslip.number_absences) * 2, 2)
+            </field>
+        </record>
+
+        <!--10104040105, 201070306, 10104040111-->
+
+        <record id="salary_rule_21" model="hr.salary.rule">
+            <field name="category_id" ref="salary_rule_category_4"/>
+            <field name="sequence">41</field>
+            <field name="name">PROVISIÓN IESS PATRONAL 12.15%</field>
+            <field name="code">IESS_12.15</field>
+            <field name="appears_on_payslip" eval="False"/>
+            <field name="amount_select">percentage</field>
+            <field name="account_debit" ref="eliterp_chart_template.1_account_template_502020201"/>
+            <field name="account_credit" ref="eliterp_chart_template.1_account_template_201070302"/>
+            <field name="amount_percentage_base">categories.ING</field>
+            <field name="amount_percentage">12.15</field>
+            <field name="register_id" ref="contribution_register_3"/>
+        </record>
+        <record id="salary_rule_22" model="hr.salary.rule">
+            <field name="category_id" ref="salary_rule_category_4"/>
+            <field name="sequence">42</field>
+            <field name="name">PROVISIÓN DÉCIMO TERCERO</field>
+            <field name="code">PROV_DTER</field>
+            <field name="condition_select">python</field>
+            <field name="account_debit" ref="eliterp_chart_template.1_account_template_502020301"/>
+            <field name="account_credit" ref="eliterp_chart_template.1_account_template_20107040202"/>
+            <field name="condition_python">
+if employee.accumulate_tenths == 'yes':
+    result = True
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = (categories.ING * 8.3333) / 100</field>
+        </record>
+        <record id="salary_rule_23" model="hr.salary.rule">
+            <field name="category_id" ref="salary_rule_category_4"/>
+            <field name="sequence">43</field>
+            <field name="name">PROVISIÓN DÉCIMO CUARTO</field>
+            <field name="code">PROV_DCUA</field>
+            <field name="condition_select">python</field>
+            <field name="account_debit" ref="eliterp_chart_template.1_account_template_502020302"/>
+            <field name="account_credit" ref="eliterp_chart_template.1_account_template_20107040201"/>
+            <field name="condition_python">
+if employee.accumulate_tenths == 'yes':
+    result = True
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = (payslip.minimum_wage / 360) * payslip.worked_days</field>
+        </record>
+        <record id="salary_rule_24" model="hr.salary.rule">
+            <field name="category_id" ref="salary_rule_category_4"/>
+            <field name="sequence">44</field>
+            <field name="name">PROVISIÓN FONDOS DE RESERVA</field>
+            <field name="code">PROV_FRES</field>
+            <field name="condition_select">python</field>
+            <field name="account_debit" ref="eliterp_chart_template.1_account_template_502020203"/>
+            <field name="account_credit" ref="eliterp_chart_template.1_account_template_201070305"/>
+            <field name="condition_python">
+if employee.accumulate_reserve_funds == 'yes' and payslip.number_of_months >= 12:
+    result = True
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+if payslip.number_of_months == 12:
+    result = (categories.ING * payslip.payment_days_reserve_funds / 30) * 0.0833
+else:
+    result = categories.ING * 0.0833
+            </field>
+            <field name="register_id" ref="contribution_register_4"/>
+        </record>
+
+        <record id="salary_rule_26" model="hr.salary.rule">
+            <field name="category_id" ref="salary_rule_category_5"/>
+            <field name="sequence">51</field>
+            <field name="name">SUBTOTAL INGRESOS</field>
+            <field name="code">SUBT_ING</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = categories.ING</field>
+        </record>
+        <record id="salary_rule_27" model="hr.salary.rule">
+            <field name="category_id" ref="salary_rule_category_5"/>
+            <field name="sequence">52</field>
+            <field name="name">SUBTOTAL INGRESOS (SBS)</field>
+            <field name="code">SUBT_ING_SBS</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = categories.ING_SBS</field>
+        </record>
+        <record id="salary_rule_28" model="hr.salary.rule">
+            <field name="category_id" ref="salary_rule_category_5"/>
+            <field name="sequence">53</field>
+            <field name="name">TOTAL INGRESOS</field>
+            <field name="code">TOTA_ING</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = categories.ING + categories.ING_SBS</field>
+        </record>
+        <record id="salary_rule_29" model="hr.salary.rule">
+            <field name="category_id" ref="salary_rule_category_5"/>
+            <field name="sequence">54</field>
+            <field name="name">TOTAL EGRESOS</field>
+            <field name="code">TOTA_EGR</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = categories.EGR</field>
+        </record>
+        <record id="salary_rule_30" model="hr.salary.rule">
+            <field name="category_id" ref="salary_rule_category_5"/>
+            <field name="sequence">55</field>
+            <field name="name">TOTAL A RECIBIR</field>
+            <field name="code">TOTA_REC</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = (categories.ING + categories.ING_SBS) - categories.EGR</field>
+        </record>
+        <record id="salary_rule_31" model="hr.salary.rule">
+            <field name="category_id" ref="salary_rule_category_5"/>
+            <field name="sequence">56</field>
+            <field name="name">COSTO TOTAL DEL EMPLEADO</field>
+            <field name="code">TOTA</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = categories.ING + categories.ING_SBS + categories.PRO</field>
+        </record>
+
+        <!--Structure-->
+        <record id="payroll_structure_1" model="hr.payroll.structure">
+            <field name="code">ATC</field>
+            <field name="name">ADMINISTRATIVA TIEMPO COMPLETO</field>
+            <field eval="[(6, 0, [ref('salary_rule_1'),
+            ref('salary_rule_2'),
+            ref('salary_rule_3'),
+            ref('salary_rule_4'),
+            ref('salary_rule_6'),
+            ref('salary_rule_7'),
+            ref('salary_rule_8'),
+			ref('salary_rule_9'),
+			ref('salary_rule_10'),
+			ref('salary_rule_11'),
+			ref('salary_rule_12'),
+			ref('salary_rule_13'),
+			ref('salary_rule_21'),
+			ref('salary_rule_22'),
+			ref('salary_rule_23'),
+			ref('salary_rule_24'),
+			ref('salary_rule_26'),
+			ref('salary_rule_27'),
+			ref('salary_rule_28'),
+			ref('salary_rule_29'),
+			ref('salary_rule_30'),
+			ref('salary_rule_31'),
+			])]" name="rule_ids"/>
+        </record>
+    </data>
+</odoo>

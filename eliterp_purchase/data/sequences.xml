@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <!--Delete Sequences-->
+        <delete model="ir.sequence" id="purchase.seq_purchase_order"/>
+
+        <!--Sequences-->
+        <record model="ir.sequence" id="purchase_order">
+            <field name="name">Pedido de compra</field>
+            <field name="code">purchase.order</field>
+            <field name="prefix">PCOMPRA/%(year)s/</field>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+    </data>
+</odoo>

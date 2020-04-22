@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--Desactivar menú Contabilidad/Configuración/Contabilidad/Modelos de conciliación-->
+        <record id="account.action_account_reconcile_model_menu" model="ir.ui.menu">
+            <field name="active" eval="False"/>
+        </record>
+    </data>
+</odoo>

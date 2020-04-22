@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <!--Sequences-->
+        <record model="ir.sequence" id="sequence_contract">
+            <field name="name">Contrato de empleado</field>
+            <field name="code">hr.contract</field>
+            <field name="prefix">RRHH/CT/%(year)s/</field>
+        </record>
+    </data>
+</odoo>

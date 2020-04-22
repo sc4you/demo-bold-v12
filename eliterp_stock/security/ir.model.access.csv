@@ -1,0 +1,12 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_product_presentation_user,product.presentation user,model_product_presentation,base.group_user,1,0,0,0
+access_product_presentation_manager,product.presentation,model_product_presentation,stock.group_stock_manager,1,1,1,1
+
+access_product_line_user,product.line user,model_product_line,base.group_user,1,0,0,0
+access_product_line_manager,product.line,model_product_line,base.group_system,1,1,1,1
+
+access_location_area_manager,stock.location.area manager,model_stock_location_area,stock.group_stock_manager,1,1,1,1
+access_location_area_user,stock.location.area user,model_stock_location_area,base.group_user,1,0,0,0
+
+access_location_area_line_manager,stock.location.area.line manager,model_stock_location_area_line,stock.group_stock_manager,1,1,1,1
+access_location_area_line_user,stock.location.area.line user,model_stock_location_area_line,base.group_user,1,0,0,0

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--Search Payment-->
+        <record id="view_search_payment_checks_inherit" model="ir.ui.view">
+            <field name="name">view_search_payment_checks_inherit</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="eliterp_payment.view_search_payment"/>
+            <field name="arch" type="xml">
+                <field name="journal_id" position="after">
+                    <field name="check_number"/>
+                </field>
+
+            </field>
+        </record>
+
+        <!--Invoice Payment-->
+        <record model="ir.ui.view" id="view_form_payment_invoice_checks">
+            <field name="name">view_form_payment_invoice_checks</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_invoice_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[last()]" position="after">
+                    <group string="Información del cheque"
+                           attrs="{'invisible':[('payment_method_code', '!=', 'customer_check_printing')]}">
+                        <field name="check_amount_in_words"/>
+                        <field name="check_number" readonly="0" placeholder="# de cheque"
+                               attrs="{'required':[('payment_method_code', '==', 'customer_check_printing')]}"/>
+                        <field name="check_date"
+                               attrs="{'required':[('payment_method_code', '==', 'customer_check_printing')]}"/>
+                        <field name="check_type"/>
+                        <field name="beneficiary" invisible="1"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_form_payment_inbound_checks">
+            <field name="name">view_form_payment_inbound_checks</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="eliterp_payment.view_form_payments"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[last()]" position="after">
+                    <group string="Información del cheque"
+                           attrs="{'invisible':[('payment_method_code', '!=', 'customer_check_printing')]}">
+                        <field name="check_amount_in_words"/>
+                        <field name="check_number" readonly="0" placeholder="# de cheque"
+                               attrs="{'required':[('payment_method_code', '==', 'customer_check_printing')], 'readonly':[('state', '!=', 'draft')]}"/>
+                        <field name="check_date"
+                               attrs="{'required':[('payment_method_code', '==', 'customer_check_printing')]}"/>
+                        <field name="check_type"/>
+                        <field name="beneficiary" invisible="1"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_form_payment_outbound_checks" model="ir.ui.view">
+            <field name="name">view_form_payment_outbound_checks</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="eliterp_payment.view_form_payments_payable"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='post']" position="after">
+                    <button name="print_check_xlsx" type="object"
+                            attrs="{'invisible':['|', ('payment_method_code', '!=', 'check_printing'), ('state','!=','posted')]}"
+                            string="Imprimir cheque"/>
+                </xpath>
+                <xpath expr="//page[@name='accounts']" position="after">
+                    <page string="Información del cheque"
+                          name="check_information"
+                          attrs="{'invisible':[('payment_method_code', '!=', 'check_printing')]}">
+                        <group>
+                            <group>
+                                <field name="check_amount_in_words"/>
+                                <field name="check_number"/>
+                                <field name="check_date"
+                                       attrs="{'required':[('payment_method_code', '==', 'check_printing')]}"/>
+                                <field name="check_type"/>
+                                <field name="file" attrs="{'invisible':[('file', '=', False)]}" filename="file_name"
+                                       readonly="1"/>
+                                <field name="file_name" invisible="1"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>
+
+

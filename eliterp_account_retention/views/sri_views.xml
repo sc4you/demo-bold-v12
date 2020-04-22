@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--Authorized Vouchers-->
+        <record id="view_form_authorized_vouchers_retention" model="ir.ui.view">
+            <field name="name">view_form_authorized_vouchers_retention</field>
+            <field name="model">sri.authorized.vouchers</field>
+            <field name="inherit_id" ref="eliterp_sri.view_form_sri_authorized_vouchers"/>
+            <field name="arch" type="xml">
+                <field name="check_authorization" position="after">
+                    <field name="validate_retention"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

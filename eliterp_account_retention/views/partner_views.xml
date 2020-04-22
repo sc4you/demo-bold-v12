@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_partner_property_form_retention" model="ir.ui.view">
+        <field name="name">view_partner_property_form_retention</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='sales_purchases']//field[@name='customer']" position="after">
+                <field name="customer_retention" groups="account.group_account_invoice"/>
+            </xpath>
+
+            <xpath expr="//page[@name='sales_purchases']//field[@name='supplier']" position="after">
+                <field name="default_retention_rent_id"
+                       attrs="{'invisible':['|', ('insurance_company','=', True), ('generate_zero_retention','=', True)]}"
+                       groups="account.group_account_user"/>
+                <field name="default_retention_iva_id"
+                       attrs="{'invisible':['|', ('insurance_company','=', True), ('generate_zero_retention','=', True)]}"
+                       groups="account.group_account_user"/>
+                <field name="insurance_company" groups="account.group_account_user"/>
+                <field name="generate_zero_retention" groups="account.group_account_user"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

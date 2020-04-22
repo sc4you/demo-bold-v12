@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_form_scrap" model="ir.ui.view">
+            <field name="name">view_form_scrap</field>
+            <field name="model">stock.scrap</field>
+            <field name="inherit_id" ref="stock.stock_scrap_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr='//group[last()]' position="after">
+                    <group>
+                        <field name="comment" nolabel="1" placeholder="Notas..."/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_tree_scrap" model="ir.ui.view">
+            <field name="name">view_tree_scrap</field>
+            <field name="model">stock.scrap</field>
+            <field name="inherit_id" ref="stock.stock_scrap_tree_view"/>
+            <field name="arch" type="xml">
+                <field name="create_date" position="after">
+                    <field name="origin"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

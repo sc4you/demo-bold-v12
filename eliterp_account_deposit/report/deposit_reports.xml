@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <template id="report_bank_deposit">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="name" t-value="o.name"/>
+                    <t t-set="report_code">CONT-005-DEPB-V1</t>
+                    <t t-set="report_title">COMPROBANTE DE DEPÓSITO BANCARIO</t>
+                    <t t-set="flag">0</t>
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <div id="informations" class="row mt32">
+                                <div class="col-3">
+                                    <strong>Fecha documento:</strong>
+                                    <p t-field="o.create_date" t-options='{"format": "dd/MM/yyyy"}'/>
+                                </div>
+                                <div class="col-3">
+                                    <strong>Fecha depósito:</strong>
+                                    <p t-field="o.date"/>
+                                </div>
+                                <div class="col-3">
+                                    <strong>Tipo de depósito:</strong>
+                                    <p t-field="o.type_deposit"/>
+                                </div>
+                                <div class="col-3">
+                                    <strong>Monto:</strong>
+                                    <p t-field="o.amount"/>
+                                </div>
+                            </div>
+
+                            <div id="informations" class="row mb32">
+                                <div class="col-6">
+                                    <strong>Banco:</strong>
+                                    <p t-field="o.journal_id"/>
+                                </div>
+                                <div class="col-6" t-if="o.communication">
+                                    <strong>Concepto:</strong>
+                                    <p t-field="o.communication"/>
+                                </div>
+                            </div>
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Diario/Cuenta</th>
+                                        <th class="text-center">Referencia/No. Cheque</th>
+                                        <th t-if="o.type_deposit=='checks_collected'">Fecha del cheque</th>
+                                        <th class="text-right">Monto</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-if="o.type_deposit=='cash'" t-foreach="o.deposit_line_cash" t-as="line">
+                                        <td>
+                                            <span t-field="line.name.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.reference"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="line.amount"/>
+                                        </td>
+                                    </tr>
+
+                                    <tr t-if="o.type_deposit=='external_checks'"
+                                        t-foreach="o.deposit_line_external_checks" t-as="line">
+                                        <td>
+                                            <span t-field="line.account_id.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.check_number"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="line.amount"/>
+                                        </td>
+                                    </tr>
+
+                                    <tr t-if="o.type_deposit=='checks_collected'"
+                                        t-foreach="o.deposit_line_checks_collected" t-as="line">
+                                        <td>
+                                            <span t-field="line.account_id.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.name.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.check_date"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="line.amount"/>
+                                        </td>
+                                    </tr>
+
+                                    <tr t-if="o.type_deposit=='transfer'"
+                                        t-foreach="o.deposit_line_transfer" t-as="line">
+                                        <td>
+                                            <span t-field="line.name.journal_id.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.name.partner_bank_account_id.acc_number"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="line.amount"/>
+                                        </td>
+                                    </tr>s
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <report
+                id="action_report_bank_deposit"
+                model="account.deposit"
+                string="Depósito bancario"
+                report_type="qweb-pdf"
+                name="eliterp_account_deposit.report_bank_deposit"
+                file="eliterp_account_deposit.report_bank_deposit"
+                print_report_name="'Depósito bancario %s' % (object.name or '/')"
+                paperformat="eliterp_base.my_paperformat_a4_portrait"
+        />
+    </data>
+</odoo>

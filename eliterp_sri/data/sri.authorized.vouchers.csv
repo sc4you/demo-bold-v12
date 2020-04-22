@@ -1,0 +1,11 @@
+id,code,name,own_authorizations,check_authorization,type
+sri_authorized_vouchers_1,01,FACTURA DE PROVEEDORES,False,True,supplier
+sri_authorized_vouchers_2,03,LIQUIDACIÓN DE COMPRAS,True,False,supplier
+sri_authorized_vouchers_3,04,NOTA DE CRÉDITO A CLIENTES,True,False,customer
+sri_authorized_vouchers_4,04,NOTA DE CRÉDITO A PROVEEDORES,False,True,supplier
+sri_authorized_vouchers_5,05,NOTA DE DÉBITO A CLIENTES,True,False,customer
+sri_authorized_vouchers_6,05,NOTA DE DÉBITO A PROVEEDORES,False,True,supplier
+sri_authorized_vouchers_7,07,COMPROBANTE DE RETENCIÓN A PROVEEDORES,True,False,supplier
+sri_authorized_vouchers_8,06,GUÍAS DE REMISIÓN,True,False,customer
+sri_authorized_vouchers_9,18,FACTURA DE CLIENTES,True,False,customer
+sri_authorized_vouchers_10,99,VALE (DOCUMENTO SIN VALOR),False,False,supplier

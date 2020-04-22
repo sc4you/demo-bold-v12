@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="main_company_division" model="account.company.division">
+            <field name="name">DIVISIÓN GENERAL</field>
+            <field name="code">D-001</field>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+        <record id="main_project" model="account.project">
+            <field name="name">PROYECTO GENERAL</field>
+            <field name="code">P-001</field>
+            <field name="company_division_id" ref="main_company_division"/>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--Desactivar menú Contabilidad/Ventas/Documentos/Pagos-->
+        <record id="account.menu_action_account_payments_receivable" model="ir.ui.menu">
+            <field name="active" eval="False"/>
+        </record>
+        <!--Desactivar menú Contabilidad/Compras/Documentos/Pagos-->
+        <record id="account.menu_action_account_payments_payable" model="ir.ui.menu">
+            <field name="active" eval="False"/>
+        </record>
+    </data>
+</odoo>

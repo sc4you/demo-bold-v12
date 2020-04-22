@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--Actions, TODO: Vista búsqueda de depósito bancario-->
+        <record id="action_bank_deposit" model="ir.actions.act_window">
+            <field name="name">Depósito bancario</field>
+            <field name="res_model">account.deposit</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Clic para registrar un nuevo depósito bancario. Se acreditará
+                    a la cuenta bancaria seleccionada y se debitará de las líneas del registro.
+                </p>
+            </field>
+        </record>
+
+        <!--Menus-->
+        <menuitem id="menu_bank_deposit"
+                  parent="eliterp_accountant.menu_bank_records"
+                  action="action_bank_deposit"
+                  sequence="1"/>
+
+        <!--Views-->
+        <!--Journal-->
+        <record id="view_journal_deposit" model="ir.ui.view">
+            <field name="name">view_journal_deposit</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='type']" position="after">
+                    <field name="manage_deposits"
+                           attrs="{'invisible': [('type', '!=', 'bank')]}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_tree_bank_deposit" model="ir.ui.view">
+            <field name="name">view_tree_bank_deposit</field>
+            <field name="model">account.deposit</field>
+            <field name="arch" type="xml">
+                <tree decoration-muted="state=='cancel'"
+                      decoration-success="state == 'posted'"
+                      decoration-bf="state == 'posted'"
+                >
+                    <field name="name"/>
+                    <field name="type_deposit"/>
+                    <field name="journal_id"/>
+                    <field name="date"/>
+                    <field name="amount" string="Monto" sum="Total de depósitos"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_form_bank_deposit" model="ir.ui.view">
+            <field name="name">view_form_bank_deposit</field>
+            <field name="model">account.deposit</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="action_post"
+                                type="object"
+                                class="oe_highlight" states="draft" string="Validar depósito"/>
+                        <button name="action_cancel" states="posted" string="Anular" type="object"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,posted"
+                               modifiers="{'readonly': true}"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title" attrs="{'invisible': [('state', '=', 'draft')]}">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group col="4">
+                            <field name="date"/>
+                            <field name="type_deposit"/>
+                            <field name="journal_id"
+                                   widget="selection"
+                                   domain="[('type', '=', 'bank'), ('manage_deposits', '=', True), ('company_id', '=', company_id)]"/>
+                            <field name="communication" placeholder="Alguna referencia de depósito..."/>
+                            <field name="ref" placeholder="p.e # de papeleta de depósito"/>
+                            <label for="amount" string="Monto"/>
+                            <div class="o_row">
+                                <field name="amount"/>
+                                <button name="charge_amount"
+                                        attrs="{'invisible':[('state', '!=', 'draft')]}"
+                                        type="object"
+                                        string="Cargar monto"
+                                        class="oe_link"/>
+                            </div>
+                            <field name="move_id" attrs="{'invisible': [('move_id', '=', False)]}"
+                                   groups="account.group_account_manager"/>
+                            <field name="company_id" invisible="1"/>
+                        </group>
+                        <group string="Líneas de efectivo" name="cash"
+                               attrs="{'invisible': [('type_deposit', '!=', 'cash')]}">
+                            <field name="deposit_line_cash" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="name" options="{'no_create':True}"/>
+                                    <field name="reference"/>
+                                    <field name="amount"/>
+                                </tree>
+                            </field>
+                        </group>
+                        <group string="Líneas de cheques externos"
+                               name='external_checks'
+                               attrs="{'invisible': [('type_deposit', '!=', 'external_checks')]}">
+                            <field name="deposit_line_external_checks" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="name"/>
+                                    <field name="check_account"/>
+                                    <field name="check_number"/>
+                                    <field name="drawer" placeholder="Quién emite el cheque"/>
+                                    <field name="account_id" options="{'no_create':True}"/>
+                                    <field name="amount"/>
+                                </tree>
+                            </field>
+                        </group>
+                        <group col="1" string="Líneas de cheques recaudados"
+                               attrs="{'invisible':[('type_deposit', '!=', 'checks_collected')]}">
+                            <group>
+                                <button name="charge_checks"
+                                        attrs="{'invisible':[('state','!=','draft')]}"
+                                        type="object"
+                                        string="Cargar cheques"
+                                        class="oe_highlight"/>
+                            </group>
+                            <field name="deposit_line_checks_collected" nolabel="1">
+                                <tree editable="bottom" create="false" edit="false">
+                                    <field name="bank_account_id"/>
+                                    <field name="name"/>
+                                    <field name="check_date"/>
+                                    <field name="account_id"/>
+                                    <field name="amount"/>
+                                </tree>
+                            </field>
+                        </group>
+                        <group col="1" string="Líneas de transferencias (cobros)"
+                               attrs="{'invisible':[('type_deposit', '!=', 'transfer')]}">
+                            <group>
+                                <button name="charge_transfers"
+                                        attrs="{'invisible':[('state','!=','draft')]}"
+                                        type="object"
+                                        string="Cargar transferencias"
+                                        class="oe_highlight"/>
+                            </group>
+                            <field name="deposit_line_transfer" nolabel="1">
+                                <tree editable="bottom" create="false" edit="false">
+                                    <field name="name"/>
+                                    <field name="amount"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

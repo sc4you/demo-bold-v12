@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--Actions-->
+    <record id="action_picking_internal" model="ir.actions.act_window">
+        <field name="name">Transferencias internas</field>
+        <field name="res_model">stock.picking</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,kanban,form,calendar</field>
+        <field name="domain">[('picking_type_id.code', '=', 'internal')]</field>
+        <field name="search_view_id" ref="stock.view_picking_internal_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crear una transferencia entre bodegas.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_picking_external" model="ir.actions.act_window">
+        <field name="name">Transferencias externas</field>
+        <field name="res_model">stock.picking</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,kanban,form,calendar</field>
+        <field name="domain">[('picking_type_id.code', '!=', 'internal')]</field>
+        <field name="context">{
+            'contact_display': 'partner_address',
+            }
+        </field>
+        <field name="search_view_id" ref="stock.view_picking_internal_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crear una transferencia externa (Proveedor/Cliente).
+            </p>
+        </field>
+    </record>
+
+    <!--Menus-->
+
+    <menuitem id="menu_picking"
+              name="Transferencias"
+              parent="stock.menu_stock_warehouse_mgmt"
+              sequence="5"
+              groups="stock.group_stock_manager,stock.group_stock_user"/>
+
+    <menuitem id="menu_picking_internal"
+              parent="menu_picking"
+              sequence="10"
+              action="action_picking_internal"/>
+
+    <menuitem id="menu_picking_external"
+              parent="menu_picking"
+              sequence="15"
+              action="action_picking_external"/>
+
+    <!--Views-->
+    <record id="view_form_picking" model="ir.ui.view">
+        <field name="name">view_form_picking</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='picking_type_id']" position="attributes">
+                <attribute name="attrs">{'readonly': [('state','in', ['done', 'cancel'])]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='location_dest_id']" position="attributes">
+                <attribute name="attrs">{'invisible': [('picking_type_code', '=', 'outgoing')], 'readonly': [('state',
+                    'in', ['done', 'cancel'])]}
+                </attribute>
+            </xpath>
+            <field name="origin" position="after">
+                <field name="reason_incoming"/>
+                <field name="is_return" invisible="1"/>
+            </field>
+            <xpath expr="//field[@name='move_ids_without_package']/tree//field[@name='product_id']" position="after">
+                <field name="quantity_presentation"/>
+                <field name="presentation_id"/>
+            </xpath>
+
+            <xpath expr="//field[@name='move_ids_without_package']/tree//field[@name='product_uom_qty']" position="after">
+                <field name="qty_presentation" attrs="{'column_invisible': ['&amp;',('parent.immediate_transfer', '=', True), ('parent.is_locked', '=', True)]}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

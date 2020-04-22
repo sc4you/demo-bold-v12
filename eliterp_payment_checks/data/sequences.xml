@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <!--Sequences-->
+        <record model="ir.sequence" id="sequence_customer_check">
+            <field name="name">CHCL Secuencia</field>
+            <field name="prefix">CHCL/%(year)s/</field>
+        </record>
+
+        <!--Journals-->
+        <record model="account.journal" id="journal_customer_check">
+            <field name="name">CHEQUE DE CLIENTES</field>
+            <field name="type">bank</field>
+            <field name="code">CHCL</field>
+            <field name="sequence_id" ref="sequence_customer_check"/>
+            <field name="customer_check" eval="True"/>
+            <field name="inbound_payment_method_ids" eval="[(4, ref('eliterp_payment_checks.payment_method_customer_check_printing'))]"/>
+            <field name="outbound_payment_method_ids" eval="False"/>
+        </record>
+    </data>
+</odoo>

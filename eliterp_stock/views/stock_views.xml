@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--Root-->
+        <menuitem id="stock.menu_stock_root"
+                  name="Inventario"
+                  groups="stock.group_stock_manager,stock.group_stock_user"
+                  web_icon="eliterp_stock,static/description/icon.png"
+                  sequence="30"/>
+    </data>
+</odoo>

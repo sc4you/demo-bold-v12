@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_tree_sale_order" model="ir.ui.view">
+            <field name="name">view_tree_sale_order</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+                <tree position="attributes">
+                    <attribute name="decoration-success">state=='sale'</attribute>
+                    <attribute name="decoration-bf">state=='sale'</attribute>
+                </tree>
+                <xpath expr="//field[@name='partner_id']" position="before">
+                    <field name="point_printing_id"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_form_sale" model="ir.ui.view">
+            <field name="name">view_form_sale</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after"><!--Cliente-->
+                    <field name="product_photo" attrs="{'invisible':[('state', 'in', ('sale', 'cancel'))]}"
+                           groups="sale.group_proforma_sales"/>
+                    <field name="point_printing_id" groups="account.group_account_invoice"
+                           context="{'default_company_id': company_id}"
+                           attrs="{'invisible':[('invoice_status', 'not in', ['to invoice', 'invoiced'])], 'required':[('invoice_status', '=', 'to invoice')],
+                    'readonly':[('invoice_status', '=', 'invoiced')]}" domain="[('company_id', '=', company_id)]"/>
+                </xpath>
+                <xpath expr="//field[@name='company_id']" position="attributes"><!--Compañía-->
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <field name="pricelist_id" position="after">
+                    <field name="discount"
+                           attrs="{'readonly':[('state', '=', 'sale')]}"
+                           groups="sales_team.group_sale_manager"/>
+                </field>
+
+                <field name="amount_untaxed" position="replace"/>
+                <xpath expr="//field[@name='amount_tax']" position="before"><!--Impuesto-->
+                    <field name="amount_without_discount" widget="monetary"
+                           options="{'currency_field': 'currency_id'}"/>
+                    <field name="amount_discount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                    <field name="amount_untaxed" widget="monetary" options="{'currency_field': 'currency_id'}"
+                           class="oe_subtotal_footer_separator"/>
+                    <field name="base_zero_iva" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                    <field name="base_taxed" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                </xpath>
+
+                <!--Lines-->
+                <field name="order_line" position="attributes">
+                    <attribute name="context">
+                        {'default_discount': discount,
+                        'default_pricelist_id': pricelist_id}
+                    </attribute>
+                </field>
+
+                <xpath expr="//field[@name='order_line']/form/group/group/field[@name='price_unit']" position="after">
+                    <field name="pricelist_id" options='{"no_open": True, "no_create": True}'
+                           groups="sales_team.group_sale_manager"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree//field[@name='price_unit']" position="after">
+                    <field name="pricelist_id" options='{"no_open": True, "no_create": True}'
+                           groups="sales_team.group_sale_manager"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

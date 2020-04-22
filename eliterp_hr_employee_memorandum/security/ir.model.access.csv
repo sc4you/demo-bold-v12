@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_appearance_memorandum_user,hr.appearance.memorandum user,model_hr_appearance_memorandum,hr.group_hr_user,1,1,1,1
+access_class_type_memorandum_user,hr.class.type.memorandum user,model_hr_class_type_memorandum,hr.group_hr_user,1,1,1,1
+access_type_memorandum_user,hr.type.memorandum user,model_hr_type_memorandum,hr.group_hr_user,1,1,1,1
+access_employee_memorandum_user,hr.employee.memorandum user,model_hr_employee_memorandum,hr.group_hr_user,1,1,1,1

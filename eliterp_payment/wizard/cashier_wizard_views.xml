@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--Payments Cashier Report-->
+        <record id="view_form_payment_cashier_report" model="ir.ui.view">
+            <field name="name">view_form_payment_cashier_report</field>
+            <field name="model">account.payment.cashier.report</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group col="4">
+                        <field name="date_start"/>
+                        <field name="date_end"/>
+                        <field name="payment_cashier_id" options="{'no_create': True}"/>
+                        <field name="user_ids"
+                               domain="[('cashier_ids','in', [payment_cashier_id])]"
+                               options="{'no_create': True}" widget="many2many_tags"/>
+                    </group>
+                    <group string="Formas de cobro">
+                        <field name="journal_ids"
+                               nolabel="1"
+                               options="{'no_create': True}" widget="many2many_tags"/>
+                    </group>
+                    <footer>
+                        <button name="print_report_pdf"
+                                type="object"
+                                class="oe_highlight"
+                                string="PDF"/>
+                        <button string="Descartar" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_payment_cashier_report" model="ir.actions.act_window">
+            <field name="name">Resumen de transacciones (Caja)</field>
+            <field name="res_model">account.payment.cashier.report</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!--TODO
+        <menuitem id="menu_payment_cashier_report"
+                  groups="eliterp_payment.group_payment_cashier"
+                  parent="menu_cash_payments"
+                  action="action_payment_cashier_report"
+                  sequence="30"/>
+        -->
+    </data>
+</odoo>

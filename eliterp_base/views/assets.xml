@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Menus-->
+        <menuitem name="Aplicaciones"
+                  id="base.menu_management"
+                  web_icon="eliterp_base,static/description/apps.png"
+                  sequence="310"/>
+        <menuitem name="Ajustes"
+                  id="base.menu_administration"
+                  web_icon="eliterp_base,static/description/settings.png"
+                  sequence="500"/>
+
+        <!--Resources-->
+        <template id="base_assets_backend" name="Estilos de base" inherit_id="web.assets_common">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/eliterp_base/static/src/less/report_boxed_styles.scss"/>
+            </xpath>
+        </template>
+    </data>
+</odoo>

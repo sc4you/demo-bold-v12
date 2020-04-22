@@ -1,0 +1,15 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_salary_advance_user,hr.salary.advance user,model_hr_salary_advance,hr_payroll.group_hr_payroll_user,1,1,1,1
+access_hr_salary_advance_line_user,hr_salary_advance_line user,model_hr_salary_advance_line,hr_payroll.group_hr_payroll_user,1,1,1,1
+
+access_hr_contract_invoice_line_user,hr.contract.invoice.line user,model_hr_contract_invoice_line,hr_payroll.group_hr_payroll_user,1,1,1,1
+access_account_invoice_hr,account.invoice hr,account.model_account_invoice,hr_payroll.group_hr_payroll_user,1,0,0,0
+
+access_employee_order_line_user,employee.order.line user,model_account_employee_order_line,hr_payroll.group_hr_payroll_user,1,1,1,1
+access_employee_order_line_system,employee.order.line system,model_account_employee_order_line,base.group_user,1,0,0,0
+
+access_payroll_provision_manager,hr.payroll.provision,model_hr_payroll_provision,hr_payroll.group_hr_payroll_user,1,1,1,1
+access_payroll_provision_line_manager,hr.payroll.provision.line,model_hr_payroll_provision_line,hr_payroll.group_hr_payroll_user,1,1,1,1
+
+access_payroll_utility_manager,hr.payroll.utility,model_hr_payroll_utility,hr_payroll.group_hr_payroll_user,1,1,1,1
+access_payroll_utility_line_manager,hr.payroll.utility.line,model_hr_payroll_utility_line,hr_payroll.group_hr_payroll_user,1,1,1,1

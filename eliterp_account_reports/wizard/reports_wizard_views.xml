@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--Status Results-->
+        <record id="view_form_status_results_report_wizard" model="ir.ui.view">
+            <field name="name">view_form_status_results_report_wizard</field>
+            <field name="model">account.status.results</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group col="4">
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                    </group>
+                    <group string="Archivo (.xlsx)" attrs="{'invisible': [('file', '=', False)]}">
+                        <field name="file_name" invisible="1"/>
+                        <field name="file" filename="file_name" nolabel="1" readonly="1"/>
+                    </group>
+                    <footer>
+                        <button name="print_report_xlsx"
+                                type="object"
+                                class="oe_highlight"
+                                string="Excel"/>
+                        <button name="print_report_pdf"
+                                type="object"
+                                class="oe_highlight"
+                                string="PDF"/>
+                        <button string="Descartar" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!--Financial Situation-->
+        <record id="view_form_financial_situation_report_wizard" model="ir.ui.view">
+            <field name="name">view_form_financial_situation_report_wizard</field>
+            <field name="model">account.financial.situation</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group col="4">
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                        <field name="company_id" invisible="1"/>
+                    </group>
+                    <group string="Archivo (.xlsx)" attrs="{'invisible': [('file', '=', False)]}">
+                        <field name="file_name" invisible="1"/>
+                        <field name="file" filename="file_name" nolabel="1" readonly="1"/>
+                    </group>
+                    <footer>
+                        <button name="print_report_xlsx"
+                                type="object"
+                                class="oe_highlight"
+                                string="Excel"/>
+                        <button name="print_report_pdf"
+                                type="object"
+                                class="oe_highlight"
+                                string="PDF"/>
+                        <button string="Descartar" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!--General Ledger-->
+        <record id="view_form_general_ledger_report_wizard" model="ir.ui.view">
+            <field name="name">view_form_general_ledger_report_wizard</field>
+            <field name="model">account.general.ledger.report</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group col="4">
+                        <field name="start_date" required="1"/>
+                        <field name="end_date"/>
+                        <field name="company_id" invisible="1"/>
+                    </group>
+                    <p class="oe_grey">
+                        Dejar en blanco campo Cuentas contable para seleccionar
+                        todas las de la compañía en curso.
+                    </p>
+                    <group>
+                        <field name="account_ids"
+                               widget="many2many_tags"
+                               domain="[('company_id', '=', company_id)]"
+                               options="{'no_create': True, 'no_open': True}"/>
+                    </group>
+                    <group string="Archivo (.xlsx)" attrs="{'invisible': [('file', '=', False)]}">
+                        <field name="file_name" invisible="1"/>
+                        <field name="file" filename="file_name" nolabel="1" readonly="1"/>
+                    </group>
+                    <footer>
+                        <button name="print_report_xlsx"
+                                type="object"
+                                class="oe_highlight"
+                                string="Excel"/>
+                        <button name="print_report_pdf"
+                                type="object"
+                                class="oe_highlight"
+                                string="PDF"/>
+                        <button string="Descartar" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!--Invoices-->
+        <record id="view_form_invoices_report_wizard" model="ir.ui.view">
+            <field name="name">view_form_invoices_report_wizard</field>
+            <field name="model">account.invoices.report</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group col="4">
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                        <field name="type_report"/>
+                        <field name="partner" options="{'no_open': True, 'no_create': True}"/>
+                    </group>
+                    <group string="Vendedores"
+                           attrs="{'invisible':[('type_report', '!=', 'out_invoice')], 'required':[('type_report', '==', 'out_invoice')]}">
+                        <field nolabel="1" name="user_ids" widget="many2many_tags"
+                               options="{'no_open': True, 'no_create': True}"/>
+                    </group>
+                    <footer>
+                        <button name="print_report_pdf"
+                                type="object"
+                                class="oe_highlight"
+                                string="PDF"/>
+                        <button string="Descartar" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_form_pos_config" model="ir.ui.view">
+            <field name="name">view_form_pos_config</field>
+            <field name="model">pos.config</field>
+            <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
+            <field name="arch" type="xml">
+                <!--Ocultamos, siempre se debe crear factura-->
+                <xpath expr="//div[@id='iface_invoicing']/div[hasclass('o_setting_left_pane')]" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <div id="order_reference" position="before">
+                    <div id="sri_configuration" class="col-12 col-lg-6 o_setting_box"
+                         groups="account.group_account_user">
+                        <div class="o_setting_right_pane">
+                            <span class="o_form_label">Punto de impresión</span>
+                            <div class="text-muted">
+                                Punto de impresión necesario para información del SRI.
+                            </div>
+                            <div class="content-group mt16">
+                                <field name="point_printing_id" required="1"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </field>
+        </record>
+    </data>
+</odoo>

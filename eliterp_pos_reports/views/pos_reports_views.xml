@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <template id="report_posorder">
+            <t t-call="web.html_container">
+                <t t-call="web.internal_layout">
+                    <div class="page">
+                        <div class="text-center">
+                            <img width="25%" t-if="user.company_id.logo"
+                                 t-att-src="'data:image/png;base64,%s' % to_text(user.company_id.logo)"/>
+                        </div>
+                        <div class="text-center">
+                            <h2>Ventas POS</h2>
+
+                            <strong>
+                                <t t-esc="date_start" t-options="{'widget': 'datetime'}"/>
+                                -
+                                <t t-esc="date_stop" t-options="{'widget': 'datetime'}"/>
+                            </strong>
+                        </div>
+
+                        <!-- Orderlines -->
+                        <h3>Ventas</h3>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Punto de venta</th>
+                                    <th>Vendedor</th>
+                                    <th>Total de venta</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach='orders' t-as='line'>
+                                    <td>
+                                        <t t-esc="line['date']"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="line['config_id']"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="line['salesman']"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="line['amount_total']"/>
+                                    </td>
+                                    <tr style="font-size: 12px; background-color: #CEE2FF;" t-foreach="line['products']"
+                                        t-as='product'>
+                                        <td colspan="3">
+                                            <t t-esc="product['product_name']"/>
+                                        </td>
+                                        <td colspan="2">
+                                            <t t-esc="product['quantity']"/>
+                                        </td>
+                                    </tr>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <br/>
+
+                        <strong>Total:
+                            <t t-esc="amount_total" t-options="{'widget': 'float', 'precision': currency_precision}"/>
+                        </strong>
+
+                    </div>
+                </t>
+            </t>
+        </template>
+
+        <record id="action_report_pos_order" model="ir.actions.act_window">
+            <field name="name">Ventas POS</field>
+            <field name="res_model">pos.order.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        <menuitem id="menu_report_pos_order" name="Ventas POS" action="action_report_pos_order"
+                  parent="point_of_sale.menu_point_rep" sequence="15"/>
+    </data>
+</odoo>

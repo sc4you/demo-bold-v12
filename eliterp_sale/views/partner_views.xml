@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_form_partner_property_sale" model="ir.ui.view">
+            <field name="name">view_form_partner_property_sale</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="product.view_partner_property_form"/>
+            <field name="groups_id" eval="[(4, ref('sales_team.group_sale_manager'))]"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='parent_pricelists']" position="after">
+                    <label for="default_discount" string="Descuento (%)" groups="sales_team.group_sale_manager"/>
+                    <div class="o_row" groups="sales_team.group_sale_manager">
+                        <field name="default_discount"/>
+                        <span>%</span>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+        <!--Base Partner-->
+        <record id="view_tree_partner_sale" model="ir.ui.view">
+            <field name="name">view_tree_partner_sale</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_tree"/>
+            <field name="arch" type="xml">
+                <field name="display_name" position="after">
+                    <field name="state_id"/>
+                    <field name="user_id"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_form_partner_sale" model="ir.ui.view">
+            <field name="name">view_form_partner_sale</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <field name="industry_id" position="after">
+                    <field name="commercial_reference_ids" widget="many2many_tags"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

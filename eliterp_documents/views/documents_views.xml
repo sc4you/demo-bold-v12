@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--Root-->
+        <menuitem id="documents.menu_root"
+                  web_icon="eliterp_documents,static/description/icon.png"/>
+
+    </data>
+</odoo>
+
+

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <!--Sequences-->
+        <record model="ir.sequence" id="sequence_account_diary">
+            <field name="name">Asiento diario</field>
+            <field name="code">account.diary</field>
+            <field name="prefix">AD/%(year)s/%(month)s/</field>
+        </record>
+
+        <!--Journals-->
+        <record model="account.journal" id="journal_account_diary">
+            <field name="name">ASIENTO DIARIO</field>
+            <field name="type">general</field>
+            <field name="code">AD</field>
+            <field name="show_on_dashboard">False</field>
+            <field name="sequence_id" ref="sequence_account_diary"/>
+        </record>
+
+    </data>
+</odoo>

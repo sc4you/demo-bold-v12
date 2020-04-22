@@ -1,0 +1,25 @@
+id,canton_id/id,code,name
+res_parish_1,res_canton_1,90101,AYACUCHO
+res_parish_2,res_canton_1,90102,BOLÍVAR (SAGRARIO)
+res_parish_3,res_canton_1,90103,CARBO (CONCEPCIÓN)
+res_parish_4,res_canton_1,90104,FEBRES CORDERO
+res_parish_5,res_canton_1,90105,GARCÍA MORENO
+res_parish_6,res_canton_1,90106,LETAMENDI
+res_parish_7,res_canton_1,90107,NUEVE DE OCTUBRE
+res_parish_8,res_canton_1,90108,OLMEDO (SAN ALEJO)
+res_parish_9,res_canton_1,90109,ROCA
+res_parish_10,res_canton_1,90110,ROCAFUERTE
+res_parish_11,res_canton_1,90111,SUCRE
+res_parish_12,res_canton_1,90112,TARQUI
+res_parish_13,res_canton_1,90113,URDANETA
+res_parish_14,res_canton_1,90114,XIMENA
+res_parish_15,res_canton_1,90115,PASCUALES
+res_parish_16,res_canton_1,90150,GUAYAQUIL
+res_parish_17,res_canton_1,90151,CHONGÓN
+res_parish_18,res_canton_1,90152,JUAN GOMEZ RENDÓN (PROGRESO)
+res_parish_19,res_canton_1,90153,MORRO
+res_parish_20,res_canton_1,90154,PASCUALES
+res_parish_21,res_canton_1,90155,PLAYAS (GENERAL VILLAMIL)
+res_parish_22,res_canton_1,90156,POSORJA
+res_parish_23,res_canton_1,90157,PUNA
+res_parish_24,res_canton_1,90158,TENGUEL
