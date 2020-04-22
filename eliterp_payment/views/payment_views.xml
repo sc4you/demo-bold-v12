@@ -1,0 +1,456 @@
+<?xml version="1.0"?>
+<odoo>
+    <!--Searchs
+    account.view_account_payment_search-->
+    <record id="view_search_payment" model="ir.ui.view">
+        <field name="name">view_search_payment</field>
+        <field name="model">account.payment</field>
+        <field name="arch" type="xml">
+            <search>
+                <field string="Referencia de pago" name="name" filter_domain="['|', ('name','ilike',self), ('beneficiary','ilike',self)]"/>
+                <field name="journal_id" string="Forma de pago"/>
+                <separator/>
+                <filter string="Contabilizado" name="state_posted" domain="[('state','=','posted')]"/>
+                <filter string="Anulado" name="state_cancelled" domain="[('state','=','cancelled')]"/>
+                <separator/>
+                <filter string="Hoy" name="payments_today" help="Pagos creados hoy en estado Contabilizado." domain="[('state', '=', 'posted'), ('payment_date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Empresa" name="groupby_partner_id" domain="[]" context="{'group_by':'partner_id'}"/>
+                    <filter string="Formas de pago" name="groupby_journal_id" domain="[]" context="{'group_by':'journal_id'}"/>
+                    <filter string="Fecha de pago" name="groupby_payment_date" domain="[]" context="{'group_by':'payment_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!--Invoice Payment-->
+    <record model="ir.ui.view" id="view_form_payment_invoice">
+        <field name="name">view_form_payment_invoice</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_invoice_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='journal_id']" position="after">
+                <field name="validate_internal_movement" invisible="1"/>
+                <field name="internal_movement"
+                       attrs="{'invisible': [('validate_internal_movement', '!=', True)], 'required': [('validate_internal_movement', '=', True)]}"/>
+                <field name="movement_reference"
+                       placeholder="p.e # de papeleta"
+                       attrs="{'invisible': [('validate_internal_movement', '!=', True)]}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!--Actions-->
+    <record id="action_wire_transfer" model="ir.actions.act_window">
+        <field name="name">Transferencia bancaria</field>
+        <field name="res_model">account.payment</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'default_payment_type': 'transfer'}
+        </field>
+        <field name="domain">[('payment_type', '=', 'transfer')]</field>
+        <field name="search_view_id" ref="view_search_payment"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Clic para registrar una transferencia bancaria.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_payments" model="ir.actions.act_window">
+        <field name="name">Cobros</field>
+        <field name="res_model">account.payment</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,graph,pivot</field>
+        <field name="domain">[('payment_type', '=', 'inbound')]</field>
+        <field name="search_view_id" ref="view_search_payment"/>
+        <field name="context">{'default_payment_type': 'inbound', 'default_partner_type': 'customer'}
+        </field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Clic para crear un nuevo cobro.
+            </p>
+        </field>
+    </record>
+    <!--Payable-->
+    <record id="action_payments_payable" model="ir.actions.act_window">
+        <field name="name">Pagos</field>
+        <field name="res_model">account.payment</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,graph,pivot</field>
+        <field name="domain">[('payment_type', '=', 'outbound')]</field>
+        <field name="search_view_id" ref="view_search_payment"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Se registran los pagos creados desde una orden de pago.
+                Ningún pago puede salir sin un origen.
+            </p>
+        </field>
+    </record>
+
+    <!--Menus-->
+    <menuitem id="menu_wire_transfer"
+              parent="eliterp_accountant.menu_bank_records"
+              action="action_wire_transfer"
+              sequence="10"/>
+
+    <menuitem id="menu_cash_payments"
+              name="Cobros"
+              parent="account.menu_finance_receivables"
+              sequence="15"/>
+    <menuitem id="menu_cash_one_payments"
+              action="action_payments"
+              parent="menu_cash_payments"
+              sequence="5"/>
+
+    <menuitem id="menu_cash_payments_payable"
+              name="Pagos"
+              parent="account.menu_finance_payables"
+              sequence="15"/>
+
+    <menuitem id="menu_payments_payable"
+              parent="menu_cash_payments_payable"
+              action="action_payments_payable"
+              sequence="10"/>
+
+    <!--Views-->
+    <!--Payments-->
+    <record id="view_tree_payments" model="ir.ui.view">
+        <field name="name">view_tree_payments</field>
+        <field name="model">account.payment</field>
+        <field name="arch" type="xml">
+            <tree decoration-info="state == 'draft'"
+                  decoration-success="state in ['reconciled', 'posted']"
+                  decoration-bf="state in ['reconciled', 'posted']"
+                  decoration-muted="state == 'cancelled'" edit="false">
+                <field name="payment_date"/>
+                <field name="name"/>
+                <field name="journal_id"/>
+                <field name="partner_id" string="Cliente"/>
+                <field name="amount" sum="Monto a cobrar"/>
+                <field name="state"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="partner_type" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_form_payments" model="ir.ui.view">
+        <field name="name">view_form_payments</field>
+        <field name="model">account.payment</field>
+        <field name="arch" type="xml">
+            <form create="false">
+                <header>
+                    <button name="post" class="oe_highlight" states="draft" string="Validar" type="object"/>
+                    <button name="action_button_cancel" string="Anular" states="posted" type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,posted,reconciled,cancelled"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" name="button_journal_entries"
+                                string="Líneas de asientos contables" type="object"
+                                groups="account.group_account_user"
+                                attrs="{'invisible':[('move_line_ids','=',[])]}" icon="fa-bars"/>
+                        <field name="move_line_ids" invisible="1"/>
+                        <button class="oe_stat_button" name="button_invoices"
+                                string="Facturas" type="object"
+                                attrs="{'invisible':[('has_invoices','=',False)]}" icon="fa-bars"/>
+                        <button class="oe_stat_button" name="open_payment_matching_screen"
+                                string="Conciliar pago" type="object"
+                                attrs="{'invisible':[('move_reconciled','=',True)]}" icon="fa-university"/>
+                        <field name="has_invoices" invisible="1"/>
+                        <field name="move_reconciled" invisible="1"/>
+                    </div>
+                    <field name="id" invisible="1"/>
+                    <div class="oe_title" attrs="{'invisible': [('state', '=', 'draft')]}">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="payment_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="partner_id" string="Cliente" attrs="{'readonly': [('state', '!=', 'draft')]}"
+                                   required="1" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="communication" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="internal_movement"
+                                   attrs="{'invisible': [('validate_internal_movement', '!=', True)], 'required': [('validate_internal_movement', '=', True)]}"/>
+                            <field name="movement_reference"
+                                   placeholder="p.e # de papeleta"
+                                   attrs="{'invisible': [('validate_internal_movement', '!=', True)]}"/>
+                        </group>
+                        <group>
+                            <field name="journal_id" widget="selection"
+                                   attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <label for="amount"/>
+                            <div name="amount_div" class="o_row">
+                                <field name="amount" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="currency_id" options="{'no_create': True, 'no_open': True}"
+                                       groups="base.group_multi_currency"
+                                       attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            </div>
+                            <field name="hide_payment_method" invisible="1"/>
+                            <field name="payment_method_id" string=" " widget="radio"
+                                   attrs="{'invisible': [('hide_payment_method', '=', True)], 'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="partner_bank_account_id"
+                                   attrs="{'invisible': [('show_partner_bank_account', '!=', True)], 'required': [('show_partner_bank_account', '=', True)], 'readonly': [('state', '!=', 'draft')]}"
+                                   context="{'default_partner_id': partner_id}"/>
+                            <field name="show_partner_bank_account" invisible="1"/>
+                            <field name="payment_method_code" invisible="1"/>
+                            <field name="payment_type" invisible="1"/>
+                            <field name="partner_type" invisible="1"/>
+                            <field name="validate_internal_movement" invisible="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_tree_payments_payable" model="ir.ui.view">
+        <field name="name">view_tree_payments_payable</field>
+        <field name="model">account.payment</field>
+        <field name="arch" type="xml">
+            <tree create="false"
+                  decoration-info="state == 'draft'"
+                  decoration-muted="state=='cancelled'"
+                  decoration-success="state in ['reconciled', 'posted']"
+                  decoration-bf="state in ['reconciled', 'posted']">
+                <field name="name"/>
+                <field name="payment_date"/>
+                <field name="journal_id"/>
+                <field name="payment_method_id"/>
+                <field name="transfer_code"/>
+                <field name="beneficiary"/>
+                <field name="amount" sum="Total pagado"/>
+                <field name="state"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="partner_type" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_form_payments_payable" model="ir.ui.view">
+        <field name="name">view_form_payments_payable</field>
+        <field name="model">account.payment</field>
+        <field name="arch" type="xml">
+            <form create="false" duplicate="false">
+                <header>
+                    <button name="post" class="oe_highlight" states="draft" string="Validar" type="object"/>
+                    <button name="action_button_cancel" string="Anular" states="posted" type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,posted,reconciled,cancelled"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" name="button_journal_entries"
+                                string="Líneas de asientos contables"
+                                type="object" groups="account.group_account_user"
+                                attrs="{'invisible':['|', ('move_line_ids','=',[]), ('has_invoices', '=', False)]}"
+                                icon="fa-bars"/>
+                        <field name="move_line_ids" invisible="1"/>
+                        <button class="oe_stat_button" name="button_invoices" string="Facturas" type="object"
+                                attrs="{'invisible':[('has_invoices','=',False)]}" icon="fa-bars"/>
+                        <button class="oe_stat_button" name="open_payment_matching_screen" string="Conciliar pago"
+                                type="object"
+                                attrs="{'invisible':['|', ('move_reconciled','=',True), ('type_pay_order', '=', 'invoice')]}"
+                                icon="fa-university"/>
+                        <field name="has_invoices" invisible="1"/>
+                        <field name="move_reconciled" invisible="1"/>
+                    </div>
+                    <field name="id" invisible="1"/>
+                    <div class="oe_title" attrs="{'invisible': [('state', '=', 'draft')]}">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Información general">
+                            <field name="payment_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="pay_order_id" required="1" options="{'no_create': True}"/>
+                            <label for="amount"/>
+                            <div name="amount_div" class="o_row">
+                                <field name="amount" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="currency_id" options="{'no_create': True, 'no_open': True}"
+                                       groups="base.group_multi_currency"
+                                       attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            </div>
+                            <field name="beneficiary" required="1"/>
+                            <field name="communication" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="move_id" groups="account.group_account_user"
+                                   attrs="{'invisible':['|', ('has_invoices','=',True), ('state', '==', 'draft')]}"/>
+                            <field name="partner_id" string="Proveedor" invisible="1"/>
+                        </group>
+                        <group name="other_information" string="Información del pago">
+                            <field name="journal_id" widget="selection"
+                                   attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="payment_method_id" string=" " widget="radio"
+                                   attrs="{'invisible': [('hide_payment_method', '=', True)], 'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="transfer_code"
+                                   placeholder="p.e Código del sistema del banco al realizar transferencia."/>
+                            <field name="partner_bank_account_id"
+                                   attrs="{'invisible': [('show_partner_bank_account', '!=', True)], 'required': [('show_partner_bank_account', '=', True)], 'readonly': [('state', '!=', 'draft')]}"
+                                   context="{'default_partner_id': partner_id}"/>
+                            <field name="show_partner_bank_account" invisible="1"/>
+                            <field name="payment_method_code" invisible="1"/>
+                            <field name="payment_type" invisible="1"/>
+                            <field name="hide_payment_method" invisible="1"/>
+                            <field name="partner_type" invisible="1"/>
+                            <field name="type_pay_order" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page attrs="{'invisible': [('type_pay_order', '=', 'invoice')]}" string="Líneas de cuenta"
+                              name="accounts">
+                            <field name="account_ids" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="company_id" invisible="1"/>
+                                    <field name="partner_id"/>
+                                    <field name="account_id"/>
+                                    <field name="amount"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_pivot_payment" model="ir.ui.view">
+        <field name="name">view_pivot_payment</field>
+        <field name="model">account.payment</field>
+        <field name="arch" type="xml">
+            <pivot disable_linking="True">
+                <field name="journal_id" type="row"/>
+                <field name="amount" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!--Transfer-->
+    <record id="view_tree_wire_transfer" model="ir.ui.view">
+        <field name="name">view_tree_wire_transfer</field>
+        <field name="model">account.payment</field>
+        <field name="arch" type="xml">
+            <tree decoration-muted="state=='cancelled'"
+                  decoration-success="state == 'posted'"
+                  decoration-bf="state == 'posted'"
+            >
+                <field name="name"/>
+                <field name="payment_date" string="Fecha de transferencia"/>
+                <field name="journal_id" string="Banco origen"/>
+                <field name="destination_journal_id"/>
+                <field name="amount" string="Monto"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_form_wire_transfer" model="ir.ui.view">
+        <field name="name">view_form_wire_transfer</field>
+        <field name="model">account.payment</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="post"
+                            type="object"
+                            class="oe_highlight" states="draft" string="Validar transferencia"/>
+                    <button name="action_button_cancel" states="draft,posted" string="Anular" type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,posted"
+                           modifiers="{'readonly': true}"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" name="button_journal_entries"
+                                string="Líneas de asientos contables" type="object"
+                                groups="account.group_account_user"
+                                attrs="{'invisible':[('move_line_ids','=',[])]}" icon="fa-bars"/>
+                        <field name="move_line_ids" invisible="1"/>
+                    </div>
+                    <field name="id" invisible="1"/>
+                    <div class="oe_title" attrs="{'invisible': [('state', '=', 'draft')]}">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group col="4">
+                        <field name="payment_date" attrs="{'readonly': [('state', '!=', 'draft')]}"
+                               string="Fecha de transferencia"/>
+                        <field name="communication"
+                               attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        <field name="journal_id"
+                               required="1"
+                               string="Banco origen"
+                               widget="selection" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        <field name="destination_journal_id"
+                               widget="selection" attrs="{'readonly': [('state', '!=', 'draft')]}"
+                               required="1"/>
+                        <label for="amount" string="Cantidad a transferir"/>
+                        <div name="amount_div" class="o_row">
+                            <field name="amount" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="currency_id" options="{'no_create': True, 'no_open': True}"
+                                   groups="base.group_multi_currency"
+                                   attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        </div>
+                        <field name="ref_transfer" placeholder="p.e # de cheques"/>
+                        <field name="company_id" invisible="1"/>
+                        <field name="payment_method_id" invisible="1"/>
+                        <field name="payment_type" invisible="1"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!--Action Views-->
+    <record model="ir.actions.act_window.view" id="action_view_tree_payments">
+        <field eval="0" name="sequence"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_tree_payments"/>
+        <field name="act_window_id" ref="action_payments"/>
+    </record>
+    <record model="ir.actions.act_window.view" id="action_view_form_payments">
+        <field eval="1" name="sequence"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_form_payments"/>
+        <field name="act_window_id" ref="action_payments"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="action_view_tree_payments_payable">
+        <field eval="0" name="sequence"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_tree_payments_payable"/>
+        <field name="act_window_id" ref="action_payments_payable"/>
+    </record>
+    <record model="ir.actions.act_window.view" id="action_view_form_payments_payable">
+        <field eval="1" name="sequence"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_form_payments_payable"/>
+        <field name="act_window_id" ref="action_payments_payable"/>
+    </record>
+
+    <record model="ir.actions.act_window.view" id="action_view_tree_wire_transfer">
+        <field eval="0" name="sequence"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_tree_wire_transfer"/>
+        <field name="act_window_id" ref="action_wire_transfer"/>
+    </record>
+    <record model="ir.actions.act_window.view" id="action_view_form_wire_transfer">
+        <field eval="1" name="sequence"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_form_wire_transfer"/>
+        <field name="act_window_id" ref="action_wire_transfer"/>
+    </record>
+</odoo>

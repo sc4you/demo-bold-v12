@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_form_employee_memorandum" model="ir.ui.view">
+            <field name="name">view_form_employee_memorandum</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//button[@name='toggle_active']" position="before">
+                        <button name="%(action_employee_memorandum)d"
+                            class="oe_stat_button"
+                            icon="fa-info"
+                            type="action"
+                            groups="hr.group_hr_user">
+                            <field name="memorandum_count" widget="statinfo" string="Memos"/>
+                        </button>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+    </data>
+</odoo>

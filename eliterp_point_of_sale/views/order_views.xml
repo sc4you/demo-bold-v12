@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_form_pos_order" model="ir.ui.view">
+            <field name="name">view_form_pos_order</field>
+            <field name="model">pos.order</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+            <field name="arch" type="xml">
+                <!--Cambiamos TAB Pagos abajo de el detalle de productos-->
+                <xpath expr="//notebook/page[2]" position="replace"/>
+                <xpath expr="//div[hasclass('oe_clear')]" position="after">
+                    <separator string="Pagos"/>
+                    <field name="statement_ids" colspan="4" nolabel="1">
+                        <tree editable="bottom" string="Líneas de pago">
+                            <field name="journal_id"/>
+                            <field name="statement_id"/>
+                            <field name="amount"/>
+                        </tree>
+                    </field>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

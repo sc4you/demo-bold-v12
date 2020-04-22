@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--Salary Advance-->
+        <template id="report_salary_advance">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="report_code">RRHH-001-ADQ-V1</t>
+                    <t t-set="report_title">ANTICIPO DE QUINCENA</t>
+                    <t t-set="flag">0</t>
+                    <t t-set="name" t-value="o.name"/>
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <div id="informations" class="row mt32 mb32">
+                                <div class="col-6">
+                                    <strong>Fecha documento:</strong>
+                                    <p t-field="o.create_date" t-options='{"format": "dd/MM/yyyy"}'/>
+                                </div>
+                                <div class="col-6">
+                                    <strong>Período:</strong>
+                                    <p t-field="o.period"/>
+                                </div>
+                            </div>
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Empleado</th>
+                                        <th class="text-center">Nº identificación</th>
+                                        <th class="text-center">Cargo</th>
+                                        <th class="text-center">Fecha ingreso</th>
+                                        <th class="text-right">Monto</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="o.line_ids" t-as="line">
+                                        <td>
+                                            <span t-field="line.employee_id.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.employee_id.identification_id"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.job_id"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.admission_date"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-esc="'%.2f' % line.amount_advance"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="clearfix">
+                                <div id="total" class="row">
+                                    <div class="col-4 ml-auto">
+                                        <table class="table table-sm">
+                                            <tr class="border-black o_subtotal">
+                                                <td>
+                                                    <strong>Total de anticipo</strong>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-esc="'%.2f' % o.amount_total"/>
+                                                </td>
+                                            </tr>
+                                            <tr class="border-black">
+                                                <td>
+                                                    <strong>(-) Abonado</strong>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-esc="'%.2f' % o.improved_pay_order"/>
+                                                </td>
+                                            </tr>
+                                            <tr class="border-black o_total">
+                                                <td>
+                                                    <strong>Saldo</strong>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-esc="'%.2f' % o.residual_pay_order"/>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div t-if="o.comment">
+                                <h4 class="text-center">Notas y comentarios</h4>
+                                <div class="mb4">
+                                    <span t-field="o.comment"/>
+                                </div>
+                            </div>
+
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+        <report
+                id="action_report_salary_advance"
+                model="hr.salary.advance"
+                string="Anticipo de quincena"
+                report_type="qweb-pdf"
+                name="eliterp_hr_payroll.report_salary_advance"
+                file="eliterp_hr_payroll.report_salary_advance"
+                print_report_name="'Anticipo de quincena %s' % (object.name or '/')"
+                paperformat="eliterp_base.my_paperformat_a4_portrait"
+        />
+
+        <!--Payslip-->
+        <template id="report_payslip">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="report_code">RRHH-001-ROL-V1</t>
+                    <t t-set="report_title">ROL DE PAGO</t>
+                    <t t-value="o.number" t-set="name"/>
+                    <t t-set="flag">1</t>
+                    <t t-call="web.external_layout">
+                        <style>
+                            tbody tr {
+                            height:1px;
+                            font-size: 9px;
+                            }
+                            tbody td {
+                            vertical-align:top;
+                            }
+                            tbody tr:first-child td:first-child {
+                            border-bottom: hidden;
+                            }
+                            tbody tr:first-child td:last-child{
+                            background-color: #E9ECEF;
+                            border-bottom: hidden;
+                            border-left: 1px solid #495057;
+                            }
+                        </style>
+                        <div class="page">
+
+                            <div id="informations" class="row mt16 mb16"
+                                 style="margin: 0; padding: 0; font-size: 10px;">
+                                <div class="col-6 bm-2">
+                                    <strong>Nombre de empleado:</strong>
+                                    <p t-field="o.employee_id"/>
+                                </div>
+                                <div class="col-2 bm-2">
+                                    <strong>Período:</strong>
+                                    <p t-field="o.date_from" t-options='{"format": "MM/yyyy"}'/>
+                                </div>
+                                <div class="col-2 bm-2">
+                                    <strong>Fecha ingreso:</strong>
+                                    <p t-field="o.employee_id.admission_date"/>
+                                </div>
+                                <div class="col-2 bm-2">
+                                    <strong>Identificación:</strong>
+                                    <p t-field="o.employee_id.identification_id"/>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-6">
+                                    <table class="table table-sm table_payslip">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="2" class="text-center col-12">
+                                                    <strong>INGRESOS</strong>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="o._get_lines('1')" t-as="line">
+                                                <tr>
+                                                    <td class="text-left col-9">
+                                                        <span t-esc="line['name']"/>
+                                                    </td>
+                                                    <td class="text-right col-3">
+                                                        <span t-esc='"%.2f" % line["amount"]'/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                            <tr>
+                                                <td class="text-right col-9">
+                                                    <span>
+                                                        <b>TOTAL INGRESOS</b>
+                                                    </span>
+                                                </td>
+                                                <td class="text-right col-3">
+                                                    <b>
+                                                        <span t-esc='"%.2f" % sum(line["amount"] for line in o._get_lines("1"))'/>
+                                                    </b>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-6">
+                                    <table class="table table-sm table_payslip">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="2" class="text-center col-12">
+                                                    <strong>EGRESOS</strong>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="o._get_lines('2')" t-as="line">
+                                                <tr>
+                                                    <td class="text-left col-9">
+                                                        <span t-esc="line['name']"/>
+                                                    </td>
+                                                    <td class="text-right col-3">
+                                                        <span t-esc='"%.2f" % line["amount"]'/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                            <tr>
+                                                <td class="text-right col-9">
+                                                    <span>
+                                                        <b>TOTAL EGRESOS</b>
+                                                    </span>
+                                                </td>
+                                                <td class="text-right col-3">
+                                                    <b>
+                                                        <span t-esc='"%.2f" % sum(line["amount"] for line in o._get_lines("2"))'/>
+                                                    </b>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <h5 class="clearfix text-center">NETO A RECIBIR:&amp;nbsp;
+                                <strong>
+                                    <span t-esc='"%.2f" % o.net_receive'/>
+                                </strong>
+                            </h5>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+        <report
+                id="action_report_payslip"
+                model="hr.payslip"
+                string="Rol individual"
+                report_type="qweb-pdf"
+                name="eliterp_hr_payroll.report_payslip"
+                file="eliterp_hr_payroll.report_payslip"
+                print_report_name="'Rol de %s' % (object.employee_id.name or '*')"
+                paperformat="eliterp_base.my_paperformat_a5_landscape"
+        />
+
+        <!--Paysip Run-->
+        <template id="report_payslip_run">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="report_code">RRHH-002-ROL-V1</t>
+                    <t t-set="report_title">ROL CONSOLIDADO</t>
+                    <t t-set="flag">0</t>
+                    <t t-set="name" t-value="o.name"/>
+                    <t t-call="web.external_layout">
+                         <div class="page">
+                            <div id="informations" class="row mt32 mb32">
+                                <div class="col-3">
+                                    <strong>Compañía</strong>
+                                    <p t-field="user.company_id.name"/>
+                                </div>
+                                <div class="col-3">
+                                    <strong>Fecha documento:</strong>
+                                    <p t-field="o.create_date" t-options="{&quot;format&quot;: &quot;dd/MM/yyyy&quot;}"/>
+                                </div>
+                                <div class="col-3">
+                                    <strong>Período:</strong>
+                                    <p t-esc="'Del %s hasta el %s' % (o.date_start.strftime('%d/%m/%Y'), o.date_end.strftime('%d/%m/%Y'))"/>
+                                </div>
+                            </div>
+                            <t t-set="records" t-value="o._get_lines_report()"/>
+                            <table class="table table-condensed" style="font-size:9px">
+                                <thead>
+                                    <tr>
+                                      <t t-foreach="records['head']" t-as="head_dict">
+                                        <th>
+                                            <t t-esc="head_dict_value"/>
+                                        </th>
+                                      </t>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="records['body']" t-as="line">
+                                      <t t-foreach="line" t-as="line_dict">
+                                        <td>
+                                            <t t-esc="line_dict_value"/>
+                                        </td>
+                                      </t>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="clearfix">
+                                <div id="total" class="row">
+                                    <div class="col-4 ml-auto">
+                                        <table class="table table-sm">
+                                            <tr class="border-black o_subtotal">
+                                                <td>
+                                                    <strong>Total de rol</strong>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-esc="'%.2f' % o.amount_total"/>
+                                                </td>
+                                            </tr>
+                                            <tr class="border-black">
+                                                <td>
+                                                    <strong>(-) Abonado</strong>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-esc="'%.2f' % o.improved_pay_order"/>
+                                                </td>
+                                            </tr>
+                                            <tr class="border-black o_total">
+                                                <td>
+                                                    <strong>Saldo</strong>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-esc="'%.2f' % o.residual_pay_order"/>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div t-if="o.comment">
+                                <h6 class="text-center">Notas y comentarios</h6>
+                                <div class="mb4">
+                                    <span t-field="o.comment"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+        <report
+                id="action_report_payslip_run"
+                model="hr.payslip.run"
+                string="Rol consolidado"
+                report_type="qweb-pdf"
+                name="eliterp_hr_payroll.report_payslip_run"
+                file="eliterp_hr_payroll.report_payslip_run"
+                print_report_name="'Rol consolidado %s' % (object.name or '/')"
+                paperformat="eliterp_base.my_paperformat_a4_landscape"
+        />
+
+        <!--Pay Paysip Run-->
+        <template id="report_payslip_run_pay">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="report_title">PAGOS DE ROL CONSOLIDADO</t>
+                    <t t-set="flag">0</t>
+                    <t t-call="web.external_layout">
+                        <div class="page">
+
+                            <div id="informations" class="row mt32 mb32">
+                                <div class="col-3">
+                                    <strong>Compañía:</strong>
+                                    <p t-field="user.company_id.name"/>
+                                </div>
+                                <div class="col-3">
+                                    <strong>Fecha documento:</strong>
+                                    <p t-field="o.create_date" t-options='{"format": "dd/MM/yyyy"}'/>
+                                </div>
+                                <div class="col-6">
+                                    <strong>Período:</strong>
+                                    <p t-esc="'Del %s hasta el %s' % (o.date_start, o.date_end)"/>
+                                </div>
+                            </div>
+                            <t t-foreach="o.slip_ids" t-as="payslip">
+                                <caption class="text-center">
+                                    Empleado:&amp;nbsp;
+                                    <strong>
+                                        <span t-field="payslip.employee_id.name"/>
+                                    </strong>
+                                    , Neto a recibir:
+                                    <span t-esc="'%.2f' % payslip.net_receive"/>
+                                </caption>
+                                <table class="table table-sm table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">FECHA DE PAGO</th>
+                                            <th class="text-center">FORMA DE PAGO</th>
+                                            <th class="text-center">NO. CHEQUE</th>
+                                            <!--TODO: En otro módulo-->
+                                            <th class="text-right">MONTO</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="payslip.pay_order_ids.filtered(lambda x: x.pay_order_id.state == 'paid')"
+                                            t-as="pay">
+                                            <t t-set="payment" t-value="pay.pay_order_id.payment_id"/>
+                                            <td>
+                                                <span t-esc="payment['payment_date']"/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="payment['journal_id'].name"/>
+                                            </td>
+                                            <td t-if="payment['payment_method_code'] == 'check_printing'">
+                                                <span t-esc="payment['check_number']"/>
+                                            </td>
+                                            <td t-else="">
+                                                <strong>
+                                                    -
+                                                </strong>
+                                            </td>
+                                            <td>
+                                                <span t-esc="'%.2f' % pay.amount"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </t>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+        <report
+                id="action_report_payslip_run_pay"
+                model="hr.payslip.run"
+                string="Pagos de nómina"
+                report_type="qweb-pdf"
+                menu="False"
+                name="eliterp_hr_payroll.report_payslip_run_pay"
+                file="eliterp_hr_payroll.report_payslip_run_pay"
+                print_report_name="'Pago de rol %s' % (object.name or '/')"
+                paperformat="eliterp_base.my_paperformat_a4_portrait"
+        />
+    </data>
+</odoo>

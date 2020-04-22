@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--Root-->
+        <menuitem id="purchase.menu_purchase_root"
+                  name="Compras"
+                  groups="purchase.group_purchase_manager,purchase.group_purchase_user"
+                  web_icon="eliterp_purchase,static/description/icon.png"
+                  sequence="25"/>
+    </data>
+</odoo>
+
+

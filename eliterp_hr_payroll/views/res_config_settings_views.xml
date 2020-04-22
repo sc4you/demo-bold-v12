@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.l10n.fr.hr.payroll</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="hr_payroll.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='hr_payroll_localization']" position="after">
+                <h2>Anticipo de quincena</h2>
+                <div class="row mt16 o_settings_container" id="hr_payroll_advance">
+                    <div class="col-12 col-lg-6 o_setting_box"
+                         title="Estos parámetros son configurados para anticipo de quincena.">
+                        <div class="o_setting_left_pane"/>
+                        <div class="o_setting_right_pane">
+                            <span class="o_form_label">Parámetros de ADQ</span>
+                            <div class="text-muted">
+                                Porcentaje de anticipo de quincena
+                            </div>
+                            <div class="content-group mt16">
+                                <field name="advance_percentage" class="text-center oe_inline"/>
+                                %
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

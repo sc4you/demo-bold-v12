@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sector_code_user,hr.sector.code user,model_hr_sector_code,hr.group_hr_user,1,1,1,1
+access_type_history_user,hr.type.history user,model_hr_type_history,hr.group_hr_user,1,1,1,1
+access_employee_history_user,hr.employee.history user,model_hr_employee_history,hr.group_hr_user,1,1,1,1
+access_employee_family_burden_user,hr.employee.family.burden user,model_hr_employee_family_burden,hr.group_hr_user,1,1,1,1
+
+access_sector_code_system,hr.sector.code system,model_hr_sector_code,base.group_user,1,0,0,0
+access_type_history_system,hr.type.history system,model_hr_type_history,base.group_user,1,0,0,0
+access_employee_history_system,hr.employee.history system,model_hr_employee_history,base.group_user,1,0,0,0
+access_employee_family_burden_system,hr.employee.family.burden system,model_hr_employee_family_burden,base.group_user,1,0,0,0

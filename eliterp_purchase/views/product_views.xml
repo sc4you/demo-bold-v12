@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_form_template_purchase" model="ir.ui.view">
+            <field name="name">view_form_template_purchase</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <field name="taxes_id" position="after">
+                    <field name="foreign_price" widget='monetary' options="{'currency_field': 'currency_id',
+                    'field_digits': True}" invisible="1"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

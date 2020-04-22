@@ -1,0 +1,4 @@
+id,name,bic,country/id,state_id/id
+res_bank_1,BANCO BOLIVARIANO,40,base.ec,eliterp_base.res_country_state_9
+res_bank_2,BANCO PICHINCHA,13,base.ec,eliterp_base.res_country_state_9
+res_bank_3,BANCO PRODUBANCO,XXX,base.ec,eliterp_base.res_country_state_9

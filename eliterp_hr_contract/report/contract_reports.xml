@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <template id="report_contract">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.basic_layout">
+                        <div class="page">
+                            <div class="clearfix text-center">
+                                <h4>CONTRATO DE TRABAJO INDEFINIDO – JORNADA A TIEMPO COMPLETO</h4>
+                            </div>
+                            <div class="clearfix text-justify">
+                                <h6>
+                                    <p>
+                                        Comparecen, ante el señor Inspector del Trabajo, para la suscripción del
+                                        presente
+                                        Contrato,
+                                        por una parte, el Señor <b>CARLOS JULIO RIVADENEIRA AGUILAR</b> como
+                                        representante
+                                        de
+                                        <b>
+                                            <span t-field="o.company_id.name"/>
+                                        </b>
+                                        , en su calidad de <b>EMPLEADOR</b>, parte a la cual se la podrá denominar
+                                        simplemente “EL EMPLEADOR”; y, por otra parte el(la) Sr.(a) &amp;nbsp;
+                                        <strong>
+                                            <span t-field="o.employee_id"/>
+                                        </strong>
+                                        &amp;nbsp; portador de la cédula de ciudadanía No. &amp;nbsp;
+                                        <strong>
+                                            <span t-field="o.employee_id.identification_id"/>
+                                        </strong>
+                                        &amp;nbsp; a quien en adelante y para fines de este contrato se le podrá
+                                        denominar
+                                        simplemente “EL TRABAJADOR”.
+                                        Quienes intervienen en este Contrato son de nacionalidad: ecuatoriana EL/LA
+                                        EMPLEADOR/A y ecuatoriana el (la) Sr. (a) EL TRABAJADOR, domiciliados en la ciudad de GUAYAQUIL, capaces y hábiles
+                                        para contratar y obligarse,
+                                        quienes libre y voluntariamente convienen en celebrar conjuntamente el presente
+                                        Contrato de Trabajo INDEFINIDO
+                                        jornada completa con sujeción a las declaraciones y estipulaciones contenidas en
+                                        las
+                                        cláusulas siguientes:
+                                        <br/>
+                                        <br/>
+                                        <b>1. ANTECEDENTES.-</b>
+                                        <br/>
+                                        1.1. El EMPLEADOR, es una persona JURÍDICA, existente bajo las leyes de la
+                                        República
+                                        del Ecuador, con domicilio
+                                        en la ciudad de GUAYAQUIL, siendo su actividad principal la venta al por mayor
+                                        de
+                                        maquinaria y equipos de construcción.
+                                        <br/>
+                                        1.2. Por la naturaleza de las actividades el EMPLEADOR requiere contratar los
+                                        servicios lícitos y personales a plazo indefinido por jornada completa
+                                        permanente de EL/LA TRABAJADOR/A,
+                                        <strong>
+                                            <span t-field="o.employee_id"/>
+                                        </strong>
+                                        ,
+                                        conforme lo señala el Art. 82 del Código del Trabajo y el Art. 2 del Mandato
+                                        Constituyente No. 8, para que desempeñe las funciones de
+                                        <font style="text-transform: uppercase;">
+                                            <strong>
+                                                <span t-field="o.job_id"/>
+                                            </strong>
+                                        </font>
+                                        <br/>1.3 EL/LA TRABAJADOR/A, ha declarado tener todo el conocimiento y la
+                                        capacidad
+                                        necesarios para llevar a cabo el tipo de
+                                        labores para las cuales le contrata el EMPLEADOR; así como también estar
+                                        debidamente
+                                        habilitado, según las disposiciones
+                                        legales, reglamentarias, administrativas respectivas, para la prestación de los
+                                        servicios contratados.
+                                        <br/>1.4. EL/LA TRABAJADOR/A, ha expresado su voluntad de prestar sus servicios
+                                        lícitos y personales para el EMPLEADOR a
+                                        cambio de la remuneración pactada, de acuerdo a los términos que se detallan en
+                                        el
+                                        presente Contrato.
+                                        <br/>
+                                        <br/>
+                                        <b>2. OBJETO DEL CONTRATO.-</b>
+                                        <br/>Con los antecedentes expuestos y por medio del presente instrumento, el
+                                        EMPLEADOR contrata a EL/LA TRABAJADOR/A y éste acepta
+                                        y se obliga para con el EMPLEADOR, a cambio de la remuneración fijada en este
+                                        Contrato, a prestar sus servicios lícitos y personales
+                                        por jornada completa permanente de EL/LA TRABAJADOR/A, conforme lo señala el
+                                        Art. 82
+                                        del Código del Trabajo y el Art. 2 del Mandato
+                                        Constituyente No. 8, en calidad de Técnico General en los lugares en donde por
+                                        las
+                                        actividades que realiza el EMPLEADOR se requiera
+                                        de los servicios EL/LA TRABAJADOR/A, conforme a las obligaciones que para ambas
+                                        partes se detallan en las cláusulas siguientes.
+                                        <br/>Se deja constancia que EL/LA TRABAJADOR/A, por convenir a sus intereses
+                                        acepta
+                                        y consiente, la asignación temporal de
+                                        otras tareas y responsabilidades siempre que estas sean similares a su cargo y
+                                        no
+                                        representen una disminución en su remuneración,
+                                        por lo que, no se podrá considerar bajo ninguna circunstancia, cambio de
+                                        ocupación o
+                                        despido intempestivo.
+                                        <br/>
+                                        <br/>
+                                        <b>3. OBLIGACIONES DE EL/LA TRABAJADOR/A Y EMPLEADOR.-</b>
+                                        En lo que respecta a las obligaciones, derecho y prohibiciones del empleador y
+                                        trabajador, estos se someten a lo dispuesto en el
+                                        Código de Trabajo, en especial al Capítulo IV denominado “De las obligaciones
+                                        del
+                                        empleador y EL TRABAJADOR, además de las
+                                        estipuladas en este contrato.
+                                        <br/>
+                                        <br/>Adicionalmente son obligaciones especiales de EL TRABAJADOR, las
+                                        siguientes:
+                                        <br/>3.1. Desempeñar el cargo o posición para la cual ha sido contratado, con la
+                                        diligencia y responsabilidad debida y cumpliendo
+                                        con todas las obligaciones que le impone la Ley, manuales, instructivos y demás
+                                        disposiciones del EMPLEADOR, de autoridades competentes
+                                        y el presente contrato;
+                                        <br/>3.2. Mantener la más absoluta reserva y confidencialidad respecto de toda
+                                        la
+                                        información que conozca sobre el manejo o las actividades
+                                        que realiza el EMPLEADOR que llegare a su conocimiento durante el cumplimiento
+                                        de
+                                        sus labores.
+                                        <br/>3.3. Colaborar con autoridades y compañeros de trabajo.
+                                        <br/>3.4. Cumplir con los demás roles y funciones que le correspondan o le sean
+                                        asignados por el EMPLEADOR.
+                                        <br/>3.5. Funciones de EL/LA TRABAJADOR/A
+                                        <strong>
+                                            <span t-field="o.employee_id"/>
+                                        </strong>
+                                        .
+                                        <br/>
+                                        <br/>
+                                        <b>4. DERECHOS DE EL/LA TRABAJADOR/A.-</b>
+                                        <br/>EL TRABAJADOR, tendrá todos los derechos consagrados en la Constitución de
+                                        la
+                                        República del Ecuador, el Código de Trabajo, el Reglamento
+                                        Interno de Trabajo y este contrato.
+                                        <p style="page-break-before: always;">
+                                            <b>5. JORNADA COMPLETA PERMANENTE DE TRABAJO.-</b>
+                                            <br/>EL/LA TRABAJADOR/A se obliga y acepta laborar la jornada completa
+                                            permanente de
+                                            trabajo, conforme lo señala el Art. 82 del Código del
+                                            Trabajo y el Art. 2 del Mandato Constituyente No. 8, en los horarios
+                                            acordados con
+                                            el EMPLEADOR, esto es de lunes a viernes A TIEMPO COMPLETO,
+                                            CON UN TOTAL DE 40 HORAS SEMANALES LABORADAS, destinándose 30 MINUTOS para
+                                            la
+                                            alimentación de EL TRABAJADOR, adicional a la jornada completa
+                                            señalada. Por tanto, de EL/LA TRABAJADOR/A laborará 8 horas, reconociéndose
+                                            el Art,
+                                            51 del Código de Trabajo (Duración del Descanso).
+                                            <br/>Las partes de común acuerdo puede hacer reajustes o cambios de
+                                            horarios, de
+                                            estimarlo conveniente, o de acuerdo a las necesidades
+                                            de las actividades del empleador con el consentimiento de EL TRABAJADOR En
+                                            caso de
+                                            existir jornada nocturna, horas suplementarias y
+                                            extraordinarias se procederá conforme lo establecido en los Art. 49 y Art.
+                                            55 del
+                                            Código de Trabajo y el Art. 2 del Mandato Constituyente No. 8.
+                                            <br/>
+                                            <br/>
+                                            <b>6. LUGAR DE TRABAJO.-</b>
+                                            <br/>EL/LA TRABAJADOR/A prestará sus servicios en la ciudad de GUAYAQUIL, en
+                                            el
+                                            lugar de trabajo ubicado en AV. JUAN TANCA MARENGO KM 2, así como en
+                                            los lugares en donde por las actividades que realiza el EMPLEADOR se
+                                            requiera de los
+                                            servicios de EL TRABAJADOR. En consecuencia, EL/LA TRABAJADOR/A
+                                            manifiesta expresamente su consentimiento para los cambios ocasionales del
+                                            lugar de
+                                            trabajo, en cualquier sitio que dispusiere EL EMPLEADOR, teniendo
+                                            en cuenta los requerimientos propios de sus actividades. Estos cambios no
+                                            significarán ni podrán ser interpretados, en manera alguna, como cambio de
+                                            ocupación o modificación del presente Contrato, pues cuentan con el acuerdo
+                                            mutuo y
+                                            la aceptación expresa de EL/LA TRABAJADOR/A.
+                                            <br/>El EMPLEADOR, en el caso de cambios ocasionales del lugar de trabajo,
+                                            pagará a
+                                            EL/LA TRABAJADOR/A los gastos de ida y vuelta, alojamiento y
+                                            alimentación cuando, por razones del servicio, tenga que trasladarse a un
+                                            lugar
+                                            distinto de su residencia, conforme lo establecido en el Art. 42
+                                            No. 22 del Código de Trabajo.
+                                            <br/>
+                                            <br/>
+                                            <b>7. REMUNERACIÓN.-</b>
+                                            <br/>Las partes de mutuo acuerdo establecen que el EMPLEADOR reconocerá como
+                                            remuneración mensual por la jornada completa permanente a EL/LA TRABAJADOR/,
+                                            la cantidad de &amp;nbsp;
+                                            <strong>
+                                                <span t-esc="o._get_wage_letters()"/>
+                                            </strong>
+                                            &amp;nbsp; de los Estados Unidos de América &amp;nbsp;
+                                            <strong>
+                                                <span t-field="o.wage"/>
+                                            </strong>
+                                            &amp;nbsp; este valor corresponde al pago por la jornada completa permanente
+                                            efectivamente laborada.
+                                            <br/>
+                                            EL/LA TRABAJADOR/A acepta la remuneración acordada como pago por sus
+                                            servicios
+                                            descritos en este Contrato.
+                                            <br/>
+                                            Por otra parte se aclara que esta remuneración no incluye los beneficios que
+                                            conforme a la Ley tuviere derecho
+                                            EL/LA TRABAJADOR/A..
+                                            <br/>
+                                            La remuneración se pagará QUINCENALMENTE, en el lugar de trabajo, mediante
+                                            pago en
+                                            CHEQUE O POR MEDIO DE CRÉDITO
+                                            A CUENTA BANCARIA..
+                                            <br/>
+                                            De la remuneración de EL/LA TRABAJADOR/A se deducirán los valores
+                                            correspondientes
+                                            al Instituto Ecuatoriano de
+                                            Seguridad Social, Impuesto a la Renta en el evento de que sea procedente,
+                                            las
+                                            ordenadas por los jueces o autoridades
+                                            competentes y las demás que establezcan la Ley..
+                                            <br/>
+                                            Si durante la vigencia del presente contrato el EMPLEADOR cancelare a sus
+                                            TRABAJADORES las gratificaciones económicas
+                                            que voluntariamente concede, EL/LA TRABAJADOR/A tendrá derecho a las mismas,
+                                            en
+                                            forma proporcional al tiempo laborado..
+                                            <br/>
+                                            <br/>
+                                            <b>8. DURACIÓN DEL CONTRATO.-</b>
+                                            <br/>
+                                            El presente contrato tendrá por su naturaleza y de acuerdo a la normativa
+                                            legal
+                                            vigente, artículo 14 del código del Trabajo,
+                                            un plazo indefinido con un periodo de prueba de 90 días.
+                                            <br/>
+                                            <br/>
+                                            <b>9. TERMINACIÓN DEL CONTRATO.-</b>
+                                            <br/>
+                                            Este contrato podrá terminar por las causales establecidas en el Art. 169
+                                            del Código
+                                            de Trabajo en cuanto sean aplicables
+                                            para este tipo de contrato.
+                                            <br/>
+                                            <br/>
+                                            <b>10. MODIFICACIÓN.-</b>
+                                            <br/>
+                                            Toda modificación o reforma al presente Contrato deberá adoptarse por
+                                            acuerdo
+                                            escrito entre las partes.
+                                            <br/>
+                                            <br/>
+                                            <b>11. LEY APLICABLE.-</b>
+                                            <br/>
+                                            Las partes se sujetan expresamente a lo acordado en este Contrato y, en todo
+                                            aquello
+                                            que no estuviere especificado, a las
+                                            normas del Código de Trabajo, Ley de Seguridad Social así como al Reglamento
+                                            Interno
+                                            de Trabajo y a los correspondientes
+                                            manuales o procedimientos determinados por el EMPLEADOR.
+                                        </p>
+                                        <b>12. JURISDICCIÓN.-</b>
+                                        <br/>
+                                        En caso de suscitarse discrepancias en la interpretación, cumplimiento y
+                                        ejecución
+                                        del presente Contrato y cuando no
+                                        fuere posible llegar a un acuerdo amistoso entre las Partes, estas se someterán
+                                        a
+                                        los jueces competentes del lugar en
+                                        que este contrato ha sido celebrado, así como al procedimiento oral determinados
+                                        por
+                                        la Ley.
+                                        <br/>
+                                        <br/>
+                                        <b>13. DECLARACIONES FINALES.-</b>
+                                        <br/>
+                                        13.1. El presente contrato constituye y representa la enunciación completa y
+                                        exclusiva de los derechos y obligaciones de
+                                        las Partes, dejándose constancia de que las mismas están conscientes de que no
+                                        existe afectación ni renuncia alguna a ningún
+                                        derecho adquirido EL TRABAJADOR.
+                                        <br/>
+                                        13.2. EL/LA TRABAJADOR/A y el EMPLEADOR acuerdan que los términos y condiciones
+                                        de
+                                        este contrato han sido discutidos,
+                                        negociados y totalmente aceptados por ambas partes.
+                                        <br/>
+                                        13.3. EL/LA TRABAJADORA declara expresamente que no tiene compromiso laboral de
+                                        ninguna especie con entidades o empresas
+                                        que requieran de su atención y que pueden distraerle de sus obligaciones con el
+                                        EMPLEADOR. Igualmente, se compromete a no
+                                        adquirir mientras preste sus servicios al EMPLEADOR compromiso laboral que
+                                        demande
+                                        parte de su tiempo, cuando estas actividades
+                                        provoquen conflicto con sus ocupaciones normales con el EMPLEADOR.
+                                        <br/>
+                                        13.4. Para fines de interpretación, se considerará que este Contrato ha sido
+                                        preparado conjuntamente por las dos partes.
+                                        <br/>
+                                        13.5. CONFIDENCIALIDAD.- EL/LA TRABAJADOR/A mantendrá en estricta reserva y
+                                        confidencialidad la Información Confidencial -
+                                        Reservada y los Materiales Confidenciales, sean de carácter tangible o
+                                        intangible
+                                        que por su naturaleza se repute confidencial
+                                        de propiedad del EMPLEADOR sus compañías relacionadas o clientes, y que en
+                                        consecuencia se obliga a no revelar ni parte ni toda
+                                        información o materiales a un tercero o a usarla para su beneficio personal,
+                                        salvo
+                                        autorización previa, expresa y por escrito
+                                        del EMPLEADOR. Cualquier revelación o utilización de la Información Confidencial
+                                        o
+                                        de los Materiales Confidenciales será considerada
+                                        como competencia desleal y el Colaborador por lo tanto quedará sujeta a las
+                                        sanciones legales respectivas.
+                                        <br/>
+                                        13.6. CONFLICTO DE INTERESES.- EL/LA TRABAJADOR/A declara expresamente que no
+                                        tiene
+                                        conflictos de intereses de
+                                        ninguna especie con personas, entidades o empresas que pueden comprometer el
+                                        cumplimiento de
+                                        las obligaciones con el EMPLEADOR.
+                                        Igualmente, se compromete a no adquirir mientras preste sus servicios a la
+                                        compañía
+                                        compromiso de ninguna naturaleza,
+                                        cuando existan actividades que provoquen conflicto con el EMPLEADOR, en todo
+                                        caso,
+                                        cualquiera fuera el alcance de compromisos
+                                        rentados u honoríficos que en el futuro deseare adquirir, deberá tener el
+                                        consentimiento previo del EMPLEADOR.
+                                        <br/>
+                                        13.7. POLÍTICA DE SEGURIDAD.- EL/LA TRABAJADOR/A se somete a las medidas usuales
+                                        de
+                                        higiene, de seguridad y de
+                                        prevención de accidentes y riesgos del trabajo prescritos por las autoridades
+                                        del
+                                        ramo y las
+                                        que ordene el EMPLEADOR de manera legal.
+                                        <br/>
+                                        <br/>
+                                        <b>14. NOTIFICACIONES.-</b>
+                                        <br/>
+                                        Notificaciones que correspondan se las hará a las siguientes direcciones:
+                                        <br/>
+                                        El EMPLEADOR en la dirección: AV. JUAN TANCA MARENGO KM 2.
+                                        <br/>
+                                        EL TRABAJADOR en la dirección: AV. JUAN TANCA MARENGO KM 2.
+                                        <br/>
+                                        Para constancia de su plena aceptación a todas y cada una de las cláusulas de
+                                        este Contrato,
+                                        las partes suscriben este Contrato, en tres ejemplares de igual contenido y
+                                        valor, que serán sometidos al registro del Inspector de Trabajo del lugar donde
+                                        se realice el
+                                        trabajo.
+                                        <br/>
+                                        <br/>Suscrito en GUAYAQUIL, el&amp;nbsp;<span t-esc="o._get_date_format()"/>.
+                                        <br/>
+                                        <br/>
+                                        <br/>
+                                        <br/>
+                                        <br/>
+                                        <br/>
+                                    </p>
+                                </h6>
+                            </div>
+                            <div class="clearfix justify-content-center">
+                                <div class="row">
+                                    <div class="col-6 text-center">
+                                        <p>_______________</p>
+                                        <p>
+                                            <strong>Gerente General</strong>
+                                        </p>
+                                        <p>
+                                            <strong>
+                                                RUC:
+                                                <span t-field="o.company_id.vat"/>
+                                            </strong>
+                                        </p>
+                                    </div>
+                                    <div class="col-6 text-center">
+                                        <p>_______________</p>
+                                        <p>
+                                            <strong>Empleado</strong>
+                                        </p>
+                                        <p>
+                                            <strong>
+                                                C.C
+                                                <span t-field="o.employee_id.identification_id"/>
+                                            </strong>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <report
+                id="action_report_contract"
+                model="hr.contract"
+                string="Contrato"
+                report_type="qweb-pdf"
+                name="eliterp_hr_contract.report_contract"
+                file="eliterp_hr_contract.report_contract"
+                print_report_name="'Contrato %s' % (object.name or '/')"
+                paperformat="my_paperformat_a4_contract"
+        />
+    </data>
+</odoo>

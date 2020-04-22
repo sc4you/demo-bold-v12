@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--Payment Cashier-->
+        <template id="report_payment_cashier">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="report_title">REPORTE DE CAJA</t>
+                    <t t-set="is_report" t-value="True"/>
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <div class="oe_structure"/>
+
+                            <div id="informations" class="row mt32">
+                                <div class="col-3">
+                                    <strong>Fecha inicial:</strong>
+                                    <p t-field="o.date_start" t-options='{"format": "dd/MM/yyyy"}'/>
+                                </div>
+                                <div class="col-3">
+                                    <strong>Fecha final:</strong>
+                                    <p t-field="o.date_end" t-options='{"format": "dd/MM/yyyy"}'/>
+                                </div>
+                                <div class="col-6">
+                                    <strong>Caja:</strong>
+                                    <p t-field="o.payment_cashier_id"/>
+                                </div>
+                            </div>
+                            <div id="informations" class="row mb32">
+                                <div class="col-6">
+                                    <strong>Usuarios:</strong>
+                                    <p>
+                                        <t t-esc="', '.join(map(lambda x: x.name, o.user_ids))"/>
+                                    </p>
+                                </div>
+                            </div>
+                            <h4 class="text-center">DETALLES DE TRANSACCIONES</h4>
+                            <t t-foreach="get_lines(o)" t-as="journal_data">
+                                <table class="table table-sm table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center"># Documento</th>
+                                            <th class="text-center">Usuario</th>
+                                            <th class="text-center">Fecha</th>
+                                            <th class="text-center">Tipo</th>
+                                            <th class="text-center">Referencia/Cheque</th>
+                                            <th class="text-center">Banco</th>
+                                            <th class="text-center"># de cuenta</th>
+                                            <th class="text-right">Monto</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="journal_data['details']" t-as="line">
+                                            <td>
+                                                <span t-esc="line['invoice']"/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="line['user']"/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="line['date']"/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="line['type']"/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="line['reference']"/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="line['bank']"/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="line['account']"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <t t-esc="line['amount']"
+                                                   t-options="{'widget': 'float', 'precision': currency_precision}"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr style="border-top: 3px solid black; font-size:15px;">
+                                            <td colspan="7" class="text-right">
+                                                TOTAL
+                                            </td>
+                                            <td class="text-right">
+                                                <t t-esc='sum(x["amount"] for x in journal_data["details"])'
+                                                   t-options="{'widget': 'float', 'precision': currency_precision}"/>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+
+                                <h4>RESUMEN DE TRANSACCIONES</h4>
+
+                                <div class="clearfix">
+                                    <div id="total" class="row">
+                                        <div class="col-4">
+                                            <table class="table table-sm">
+                                                <tr>
+                                                    <td class="text-center">TIPO</td>
+                                                    <td class="text-right">MONTO</td>
+                                                </tr>
+                                                <t t-foreach="journal_data['summary']" t-as="summary_line">
+                                                    <tr>
+                                                        <td>
+                                                            <span t-esc="summary_line['type']"/>
+                                                        </td>
+                                                        <td class="text-right">
+                                                            <t t-esc="summary_line['amount']"
+                                                               t-options="{'widget': 'float', 'precision': currency_precision}"/>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                                <tr style="font-size: 15px;" class="border-black o_total">
+                                                    <td>
+                                                        <strong>TOTAL</strong>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <t t-esc='sum(y["amount"] for y in journal_data["summary"])'
+                                                           t-options="{'widget': 'float', 'precision': currency_precision}"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+
+                            <div class="oe_structure"/>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <report
+                id="action_report_payment_cashier"
+                model="account.payment.cashier.report"
+                string="Transacciones por fecha (caja registradora)"
+                report_type="qweb-pdf"
+                name="eliterp_payment.report_payment_cashier"
+                file="eliterp_payment.report_payment_cashier"
+                paperformat="eliterp_base.my_paperformat_a4_landscape"
+        />
+
+    </data>
+</odoo>

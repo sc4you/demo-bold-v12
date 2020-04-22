@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <!--Sequences-->
+        <record model="ir.sequence" id="sequence_salary_advance">
+            <field name="name">Anticipo de quincena</field>
+            <field name="code">hr.salary.advance</field>
+            <field name="prefix">ADQ/%(year)s/%(month)s/</field>
+        </record>
+        <record model="ir.sequence" id="sequence_payslip_run">
+            <field name="name">Rol consolidado</field>
+            <field name="code">hr.payslip.run</field>
+            <field name="prefix">ROLC/%(year)s/%(month)s/</field>
+        </record>
+
+        <!--Delete Sequences-->
+        <delete model="ir.sequence" id="hr_payroll.seq_salary_slip"/>
+
+        <!--Sequences-->
+        <record model="ir.sequence" id="payslip">
+            <field name="name">Rol individual</field>
+            <field name="code">salary.slip</field>
+            <field name="prefix">ROL/%(year)s/%(month)s/</field>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+
+        <!--Journals-->
+        <record model="account.journal" id="journal_salary_advance">
+            <field name="name">ANTICIPO DE QUINCENA</field>
+            <field name="type">general</field>
+            <field name="code">ADQ</field>
+            <field name="show_on_dashboard">False</field>
+            <field name="sequence_id" ref="sequence_salary_advance"/>
+        </record>
+        <record model="account.journal" id="journal_payslip_run">
+            <field name="name">ROL CONSOLIDADO</field>
+            <field name="type">general</field>
+            <field name="code">ROLC</field>
+            <field name="show_on_dashboard">False</field>
+            <field name="sequence_id" ref="sequence_payslip_run"/>
+        </record>
+    </data>
+</odoo>

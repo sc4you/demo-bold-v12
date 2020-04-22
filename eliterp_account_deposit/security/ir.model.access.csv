@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_account_deposit_manager,account.deposit,model_account_deposit,account.group_account_user,1,1,1,1
+
+access_account_deposit_line_cash_manager,account.deposit.line.cash,model_account_deposit_line_cash,account.group_account_user,1,1,1,1
+access_account_deposit_line_external_checks_manager,account.deposit.line.external.checks,model_account_deposit_line_external_checks,account.group_account_user,1,1,1,1
+access_account_deposit_line_collected_check_manager,account.deposit.line.collected.check,model_account_deposit_line_collected_check,account.group_account_user,1,1,1,1
+access_account_deposit_line_transfer_manager,account.deposit.line.trasnfer,model_account_deposit_line_transfer,account.group_account_user,1,1,1,1

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="fiscal_this_year" model="account.fiscal.year">
+            <field name="date_from" eval="datetime.now().date().replace(month=1, day=1)"/>
+            <field name="date_to" eval="datetime.now().date().replace(month=12, day=31)"/>
+        </record>
+
+        <function model="account.fiscal.year" name="load_periods" eval="[[ref('fiscal_this_year')]]"/>
+    </data>
+</odoo>
+

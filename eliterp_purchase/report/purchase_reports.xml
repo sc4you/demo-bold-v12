@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--Templates-->
+    <template id="report_purchase_order">
+        <t t-call="web.external_layout">
+            <t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})"/>
+            <t t-set="name" t-value="o.name"/>
+            <t t-set="flag">0</t>
+            <div class="page">
+                <div class="oe_structure"/>
+                <div id="informations" class="row mt32">
+                    <div class="col-4">
+                        <strong>Proveedor:</strong>
+                        <p t-field="o.partner_id"/>
+                    </div>
+                    <div class="col-4">
+                        <strong>Fecha:</strong>
+                        <p t-field="o.date_order"/>
+                    </div>
+                    <div class="col-4">
+                        <strong>Tipo de compra:</strong>
+                        <p t-field="o.type"/>
+                    </div>
+                </div>
+
+                <div id="informations" class="row mb32">
+                    <div class="col-4">
+                        <strong>Bodega a recibir:</strong>
+                        <p t-field="o.picking_type_id"/>
+                    </div>
+                    <div class="col-4">
+                        <strong>Recibida por:</strong>
+                        <p t-field="o.user_id"/>
+                    </div>
+                    <div class="col-4" t-if="o.partner_ref">
+                        <strong>Referencia:</strong>
+                        <p t-field="o.partner_ref"/>
+                    </div>
+                </div>
+
+                <table class="table table-sm o_main_table">
+                    <thead>
+                        <tr>
+                            <th>
+                                <strong>Descripción</strong>
+                            </th>
+                            <th class="text-center">
+                                <strong>Cantidad</strong>
+                            </th>
+                            <th>
+                                <strong>CpP</strong>
+                            </th>
+                            <th class="text-right">
+                                <strong>Precio Unitario</strong>
+                            </th>
+                            <th class="text-right">
+                                <strong>Impuestos</strong>
+                            </th>
+                            <th class="text-right">
+                                <strong>Subtotal</strong>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="o.order_line" t-as="line">
+                            <td>
+                                <span t-field="line.name"/>
+                            </td>
+                            <td class="text-center">
+                                <span t-field="line.product_qty"/>
+                            </td>
+                            <td>
+                                <span t-esc="line.product_id._get_qty_presentation(line.product_qty)"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-field="line.price_unit"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-esc="', '.join(map(lambda x: x.name, line.taxes_id))"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-field="line.price_subtotal"
+                                      t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div id="total" class="row justify-content-end">
+                    <div class="col-4">
+                        <table class="table table-sm">
+                            <tr class="border-black">
+                                <td>
+                                    <strong>Subtotal</strong>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="o.amount_untaxed"
+                                          t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>IVA</td>
+                                <td class="text-right">
+                                    <span t-field="o.amount_tax"
+                                          t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+                                </td>
+                            </tr>
+                            <tr class="border-black o_total">
+                                <td>
+                                    <strong>Total</strong>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="o.amount_total"
+                                          t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <!--Invoices-->
+                <t groups="account.group_account_invoice">
+                    <br/>
+                    <table class="table table-sm" t-if="o.invoice_count > 0">
+                        <thead>
+                            <tr>
+                                <th class="text-center">
+                                    <strong>No. Factura</strong>
+                                </th>
+                                <th class="text-center">
+                                    <strong>Fecha factura</strong>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="o.invoice_ids" t-as="invoice">
+                                <td>
+                                    <span t-field="invoice.reference"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-field="invoice.date_invoice"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </t>
+
+                <div t-if="o.notes">
+                    <h4 class="text-center">Términos y condiciones</h4>
+                    <div class="mb4">
+                        <span t-field="o.notes"/>
+                    </div>
+                </div>
+
+                <div class="oe_structure"/>
+            </div>
+        </t>
+    </template>
+
+    <template id="report_purchase_quotation">
+        <t t-call="web.external_layout">
+            <t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})"/>
+            <t t-set="name" t-value="o.name"/>
+            <div class="page">
+                <div class="oe_structure"/>
+                <div id="informations" class="row mt32 mb32">
+                    <div class="col-4">
+                        <strong>Proveedor:</strong>
+                        <p t-field="o.partner_id"/>
+                    </div>
+                    <div class="col-4">
+                        <strong>Fecha:</strong>
+                        <p t-field="o.date_order"/>
+                    </div>
+                    <div class="col-4">
+                        <strong>Tipo de compra:</strong>
+                        <p t-field="o.type"/>
+                    </div>
+                </div>
+                <table class="table table-sm o_main_table">
+                    <thead>
+                        <tr>
+                            <th>
+                                <strong>Descripción</strong>
+                            </th>
+                            <th>
+                                <strong>Fecha planeada</strong>
+                            </th>
+                            <th class="text-center">
+                                <strong>Cantidad</strong>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="o.order_line" t-as="line">
+                            <td>
+                                <span t-field="line.name"/>
+                            </td>
+                            <td class="text-center">
+                                <span t-field="line.date_planned"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-field="line.product_qty"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="oe_structure"/>
+            </div>
+        </t>
+    </template>
+
+    <!--Order-->
+    <template id="purchase.report_purchaseorder">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="eliterp_purchase.report_purchase_order" t-lang="o.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+
+    <!--Quotation-->
+    <template id="purchase.report_purchasequotation">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="eliterp_purchase.report_purchase_quotation" t-lang="o.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+</odoo>

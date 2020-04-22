@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_form_payslip_wizard_mass_mail" model="ir.ui.view">
+        <field name="name">view_form_payslip_wizard_mass_mail</field>
+        <field name="model">hr.payslip.mass.mail</field>
+        <field name="arch" type="xml">
+            <form>
+                <group string="Roles">
+                    <field name="payslip_ids" widget="many2many_tags"
+                           nolabel="1"
+                           options="{'no_create_edit': True,'no_create': True}"/>
+                </group>
+                <footer>
+                    <button name="action_send_mass_mail" type="object" string="Enviar correos"
+                            class="oe_highlight"/>
+                    <button string="Descartar" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_payslip_mass_mail" model="ir.actions.act_window">
+        <field name="name">Envío de roles por correo</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.payslip.mass.mail</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_form_payslip_wizard_mass_mail"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--Request Vacations-->
+        <template id="report_request_vacations">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="report_code">RRHH-004-VAC-V1</t>
+                    <t t-set="report_title">SOLICITUD DE VACACIONES</t>
+                    <t t-set="flag">0</t>
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <div id="informations" class="row mt32 mb32">
+                                <div class="col-2">
+                                    <strong>Emitido:</strong>
+                                    <p t-field="o.create_date" t-options='{"format": "dd/MM/yyyy"}'/>
+                                </div>
+                                <div class="col-2">
+                                    <strong>Fecha inicio:</strong>
+                                    <p t-field="o.date_from" t-options='{"format": "dd/MM/yyyy"}'/>
+                                </div>
+                                <div class="col-2">
+                                    <strong>Fecha fin:</strong>
+                                    <p t-field="o.date_to" t-options='{"format": "dd/MM/yyyy"}'/>
+                                </div>
+                                <div class="col-6">
+                                    <strong>Empleado:</strong>
+                                    <p t-field="o.employee_id"/>
+                                </div>
+                            </div>
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Período</th>
+                                        <th class="text-center">Disponibles</th>
+                                        <th class="text-center">Solicitados</th>
+                                        <th class="text-center">Saldo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="o._get_vacations()" t-as="line">
+                                        <td>
+                                            <span t-esc="line['period']"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="line['vacations_available']"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="line['requested']"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="line['residue']"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div t-if="o.report_note">
+                                <h4 class="text-center">Notas y comentarios</h4>
+                                <div class="mb4">
+                                    <span t-field="o.report_note"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+        <report
+                id="action_report_request_vacations"
+                model="hr.leave"
+                string="Solicitud de vacaciones"
+                report_type="qweb-pdf"
+                menu="False"
+                name="eliterp_hr_holidays.report_request_vacations"
+                file="eliterp_hr_holidays.report_request_vacations"
+                print_report_name="'Solicitud: %s' % (object.display_name or '/')"
+                paperformat="eliterp_base.my_paperformat_a5_landscape"
+        />
+    </data>
+</odoo>

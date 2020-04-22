@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--Resources-->
+        <template id="stock_reports_assets_backend" name="Estilos de reportes de inventario" inherit_id="web.assets_common">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/eliterp_stock_reports/static/src/less/stock_reports_styles.scss"/>
+            </xpath>
+        </template>
+
+        <!--Stock-->
+        <menuitem id="menu_stock_reports"
+                  name="Reportes"
+                  parent="stock.menu_stock_root"
+                  groups="stock.group_stock_manager"
+                  sequence='99'/>
+
+        <record id="action_report_quant" model="ir.actions.act_window">
+            <field name="name">Reporte de inventario</field>
+            <field name="res_model">stock.quant.report</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="eliterp_stock_reports.view_form_quant_report_wizard"/>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_quant_report"
+                  parent="menu_stock_reports"
+                  action="action_report_quant"
+                  sequence="5"/>
+
+    </data>
+</odoo>

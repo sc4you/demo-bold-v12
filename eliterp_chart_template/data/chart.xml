@@ -1,0 +1,786 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="eliterp_chart_template" model="account.chart.template">
+        <field name="name">CATÁLOGO DE CUENTAS CONTABLES ESTÁNDAR</field>
+        <field name="currency_id" ref="base.USD"/>
+        <field name="bank_account_code_prefix">101010202</field>
+        <field name="cash_account_code_prefix">101010101</field>
+        <field name="transfer_account_code_prefix">10101020</field>
+        <field name="code_digits" eval="0"/>
+    </record>
+
+    <record model="account.account.type" id="data_account_type_view">
+        <field name="name">Vista</field>
+        <field name="type">view</field>
+        <field name="include_initial_balance" eval="False"/>
+    </record>
+
+    <record model="account.account.type" id="data_account_type_other">
+        <field name="name">Otro</field>
+        <field name="type">other</field>
+        <field name="include_initial_balance" eval="False"/>
+    </record>
+
+    <!--Level 1-->
+    <record model="account.account.template" id="account_template_1">
+        <field name="name">ACTIVO</field>
+        <field name="code">1</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">1</field>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_2">
+        <field name="name">PASIVO</field>
+        <field name="code">2</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">1</field>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_3">
+        <field name="name">PATRIMONIO NETO</field>
+        <field name="code">3</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">1</field>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_4">
+        <field name="name">INGRESOS</field>
+        <field name="code">4</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">1</field>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_5">
+        <field name="name">COSTOS Y GASTOS</field>
+        <field name="code">5</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">1</field>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_6">
+        <field name="name">CUENTAS DE RESULTADOS ACREEDORAS</field>
+        <field name="code">6</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">1</field>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_7">
+        <field name="name">CUENTAS DE RESULTADO DEUDORAS</field>
+        <field name="code">7</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">1</field>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_8">
+        <field name="name">OTRO RESULTADO INTEGRAL</field>
+        <field name="code">8</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">1</field>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_9">
+        <field name="name">CUENTAS DE CONTINGENCIAS</field>
+        <field name="code">9</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">1</field>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+
+    <!--1-->
+    <!--Level 2-->
+    <record model="account.account.template" id="account_template_101">
+        <field name="name">ACTIVO CORRIENTE</field>
+        <field name="code">101</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">2</field>
+        <field name="parent_id" ref="account_template_1"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_102">
+        <field name="name">ACTIVO NO CORRIENTE</field>
+        <field name="code">102</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">2</field>
+        <field name="parent_id" ref="account_template_1"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+
+    <!--Level 3-->
+    <record model="account.account.template" id="account_template_10101">
+        <field name="name">EFECTIVO Y EQUIVALENTES AL EFECTIVO</field>
+        <field name="code">10101</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">3</field>
+        <field name="parent_id" ref="account_template_101"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_10102">
+        <field name="name">ACTIVOS FINANCIEROS</field>
+        <field name="code">10102</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">3</field>
+        <field name="parent_id" ref="account_template_101"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_10104">
+        <field name="name">SERVICIOS Y OTROS PAGOS ANTICIPADOS</field>
+        <field name="code">10104</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">3</field>
+        <field name="parent_id" ref="account_template_101"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_10105">
+        <field name="name">ACTIVOS POR IMPUESTOS CORRIENTES</field>
+        <field name="code">10105</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">3</field>
+        <field name="parent_id" ref="account_template_101"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <!--Level 4-->
+    <record model="account.account.template" id="account_template_1010101">
+        <field name="name">CAJAS</field>
+        <field name="code">1010101</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">4</field>
+        <field name="parent_id" ref="account_template_10101"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_1010102">
+        <field name="name">BANCOS</field>
+        <field name="code">1010102</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">4</field>
+        <field name="parent_id" ref="account_template_10101"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_1010205">
+        <field name="name">DOCUMENTOS Y CUENTAS POR COBRAR</field>
+        <field name="code">1010205</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">4</field>
+        <field name="parent_id" ref="account_template_10102"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_1010501">
+        <field name="name">CRÉDITO TRIBUTARIO A FAVOR DE LA EMPRESA</field>
+        <field name="code">1010501</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">4</field>
+        <field name="parent_id" ref="account_template_10105"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_1010404">
+        <field name="name">OTROS ANTICIPOS ENTREGADOS</field>
+        <field name="code">1010404</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">4</field>
+        <field name="parent_id" ref="account_template_10104"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <!--Level 5-->
+    <record model="account.account.template" id="account_template_101010101">
+        <field name="name">CAJA CHICA</field>
+        <field name="code">101010101</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">5</field>
+        <field name="parent_id" ref="account_template_1010101"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_101010201">
+        <field name="name">BANCOS LOCALES</field>
+        <field name="code">101010202</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">5</field>
+        <field name="parent_id" ref="account_template_1010102"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_101020501">
+        <field name="name">DOCUMENTOS Y CUENTAS POR COBRAR CLIENTE NO RELACIONADOS</field>
+        <field name="code">101020501</field>
+        <field name="user_type_id" ref="account.data_account_type_receivable"/>
+        <field name="account_level">5</field>
+        <field name="reconcile" eval="True"/>
+        <field name="parent_id" ref="account_template_1010205"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_101040401">
+        <field name="name">ANTICIPOS EMPLEADOS</field>
+        <field name="code">101040401</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">5</field>
+        <field name="parent_id" ref="account_template_1010404"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_101050101">
+        <field name="name">IMPUESTO AL VALOR AGREGADO PAGADO</field>
+        <field name="code">101050101</field>
+        <field name="alternate_code">72</field>
+        <field name="user_type_id" ref="account.data_account_type_current_assets"/>
+        <field name="account_level">5</field>
+        <field name="parent_id" ref="account_template_1010205"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+
+    <!--Level 6-->
+    <record model="account.account.template" id="account_template_10104040102">
+        <field name="name">ANTICIPOS A EMPLEADOS</field>
+        <field name="code">10104040102</field>
+        <field name="user_type_id" ref="data_account_type_other"/>
+        <field name="account_level">6</field>
+        <field name="parent_id" ref="account_template_101040401"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_10104040105">
+        <field name="name">PRÉSTAMOS A EMPLEADOS</field>
+        <field name="code">10104040105</field>
+        <field name="user_type_id" ref="data_account_type_other"/>
+        <field name="account_level">6</field>
+        <field name="parent_id" ref="account_template_101040401"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_10104040111">
+        <field name="name">OTROS DESCUENTOS</field>
+        <field name="code">10104040111</field>
+        <field name="user_type_id" ref="data_account_type_other"/>
+        <field name="account_level">6</field>
+        <field name="parent_id" ref="account_template_101040401"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+
+    <!--2-->
+    <!--Level 2-->
+    <record model="account.account.template" id="account_template_201">
+        <field name="name">PASIVO CORRIENTE</field>
+        <field name="code">201</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">2</field>
+        <field name="parent_id" ref="account_template_2"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_202">
+        <field name="name">PASIVO NO CORRIENTE</field>
+        <field name="code">202</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">2</field>
+        <field name="parent_id" ref="account_template_2"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <!--Level 3-->
+    <record model="account.account.template" id="account_template_20103">
+        <field name="name">CUENTAS Y DOCUMENTOS POR PAGAR</field>
+        <field name="code">20103</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">3</field>
+        <field name="parent_id" ref="account_template_201"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_20107">
+        <field name="name">OTRAS OBLIGACIONES CORRIENTES</field>
+        <field name="code">20107</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">3</field>
+        <field name="parent_id" ref="account_template_201"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <!--Level 4-->
+    <record model="account.account.template" id="account_template_2010301">
+        <field name="name">CUENTAS Y DOCUMENTOS POR PAGAR LOCALES</field>
+        <field name="code">2010301</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">4</field>
+        <field name="parent_id" ref="account_template_20103"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_2010701">
+        <field name="name">CON LA ADMINISTRACIÓN TRIBUTARIA</field>
+        <field name="code">2010701</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">4</field>
+        <field name="parent_id" ref="account_template_20107"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_2010703">
+        <field name="name">OTRAS OBLIGACIONES CON EL IESS</field>
+        <field name="code">2010703</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">4</field>
+        <field name="parent_id" ref="account_template_20107"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_2010704">
+        <field name="name">OTRAS OBLIGACIONES CORRIENTES POR BENEFICIOS DE LEY A EMPLEADOS</field>
+        <field name="code">2010704</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">4</field>
+        <field name="parent_id" ref="account_template_20107"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <!--Level 5-->
+    <record model="account.account.template" id="account_template_201030101"><!--Importante-->
+        <field name="name">PROVEEDORES LOCALES</field>
+        <field name="code">201030101</field>
+        <field name="user_type_id" ref="account.data_account_type_payable"/>
+        <field name="account_level">5</field>
+        <field name="reconcile" eval="True"/>
+        <field name="parent_id" ref="account_template_2010301"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_201070101">
+        <field name="name">IMPUESTO AL VALOR AGREGADO COBRADO (IVA)</field>
+        <field name="code">201070101</field>
+        <field name="user_type_id" ref="account.data_account_type_current_liabilities"/>
+        <field name="account_level">5</field>
+        <field name="reconcile" eval="True"/>
+        <field name="parent_id" ref="account_template_2010701"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_201070104">
+        <field name="name">RETENCIÓN RENTA PROVEEDORES</field>
+        <field name="code">201070104</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">5</field>
+        <field name="reconcile" eval="True"/>
+        <field name="parent_id" ref="account_template_2010701"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_201070301">
+        <field name="name">APORTE PERSONAL AL IESS 9.45%</field>
+        <field name="code">201070301</field>
+        <field name="user_type_id" ref="account.data_account_type_payable"/>
+        <field name="account_level">5</field>
+        <field name="reconcile" eval="True"/>
+        <field name="parent_id" ref="account_template_2010301"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_201070302">
+        <field name="name">APORTE PATRONAL AL IESS 12.15%</field>
+        <field name="code">201070302</field>
+        <field name="user_type_id" ref="account.data_account_type_payable"/>
+        <field name="account_level">5</field>
+        <field name="reconcile" eval="True"/>
+        <field name="parent_id" ref="account_template_2010703"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_201070303">
+        <field name="name">PRÉSTAMOS QUIROGRAFARIOS AL IESS</field>
+        <field name="code">201070303</field>
+        <field name="user_type_id" ref="account.data_account_type_payable"/>
+        <field name="account_level">5</field>
+        <field name="reconcile" eval="True"/>
+        <field name="parent_id" ref="account_template_2010703"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_201070304">
+        <field name="name">PRÉSTAMOS HIPOTECARIOS AL IESS</field>
+        <field name="code">201070304</field>
+        <field name="user_type_id" ref="account.data_account_type_payable"/>
+        <field name="account_level">5</field>
+        <field name="reconcile" eval="True"/>
+        <field name="parent_id" ref="account_template_2010703"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_201070305">
+        <field name="name">FONDOS DE RESERVA POR PAGAR</field>
+        <field name="code">201070305</field>
+        <field name="user_type_id" ref="account.data_account_type_payable"/>
+        <field name="account_level">5</field>
+        <field name="reconcile" eval="True"/>
+        <field name="parent_id" ref="account_template_2010703"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_201070306">
+        <field name="name">EXTENSIÓN SALUD PARA CÓNYUGE</field>
+        <field name="code">201070306</field>
+        <field name="user_type_id" ref="account.data_account_type_payable"/>
+        <field name="account_level">5</field>
+        <field name="reconcile" eval="True"/>
+        <field name="parent_id" ref="account_template_2010703"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_201070402">
+        <field name="name">BENEFICIOS POR PAGAR</field>
+        <field name="code">201070402</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">5</field>
+        <field name="reconcile" eval="True"/>
+        <field name="parent_id" ref="account_template_2010704"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <!--Level 6-->
+    <record model="account.account.template" id="account_template_20107010413">
+        <field name="name">(312) - 1% TRANSFERENCIA DE BIENES MUEBLES DE NATURALEZA CORPORAL</field>
+        <field name="code">20107010413</field>
+        <field name="user_type_id" ref="data_account_type_other"/>
+        <field name="account_level">6</field>
+        <field name="parent_id" ref="account_template_201070104"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_20107040201">
+        <field name="name">DÉCIMO TERCERO POR PAGAR</field>
+        <field name="code">20107040201</field>
+        <field name="user_type_id" ref="account.data_account_type_payable"/>
+        <field name="account_level">6</field>
+        <field name="reconcile" eval="True"/>
+        <field name="parent_id" ref="account_template_201070402"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_20107040202">
+        <field name="name">DÉCIMO CUARTO POR PAGAR</field>
+        <field name="code">20107040202</field>
+        <field name="user_type_id" ref="account.data_account_type_payable"/>
+        <field name="account_level">6</field>
+        <field name="reconcile" eval="True"/>
+        <field name="parent_id" ref="account_template_201070402"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+
+    <!--3-->
+    <!--Level 2-->
+    <record model="account.account.template" id="account_template_306">
+        <field name="name">RESULTADOS ACUMULADOS</field>
+        <field name="code">306</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">2</field>
+        <field name="parent_id" ref="account_template_3"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <!--Level 3-->
+    <record model="account.account.template" id="account_template_30601">
+        <field name="name">GANANCIAS ACUMULADAS</field>
+        <field name="code">30601</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">3</field>
+        <field name="parent_id" ref="account_template_306"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_30602">
+        <field name="name">(-) PÉRDIDAS ACUMULADAS</field>
+        <field name="code">30602</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">3</field>
+        <field name="parent_id" ref="account_template_306"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <!--Level 4-->
+    <record model="account.account.template" id="account_template_3060101">
+        <field name="name">GANANCIAS ACUMULADAS DE AÑOS ANTERIORES</field>
+        <field name="code">3060101</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">4</field>
+        <field name="parent_id" ref="account_template_30601"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_3060201">
+        <field name="name">(-) PÉRDIDAS ACUMULADAS DE AÑOS ANTERIORES</field>
+        <field name="code">3060201</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">4</field>
+        <field name="parent_id" ref="account_template_30602"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <!--Level 5-->
+    <record model="account.account.template" id="account_template_306010101">
+        <field name="name">GANANCIAS ACUMULADAS DE AÑOS ANTERIORES</field>
+        <field name="code">306010101</field>
+        <field name="user_type_id" ref="account.data_account_type_equity"/>
+        <field name="account_level">5</field>
+        <field name="reconcile" eval="True"/>
+        <field name="parent_id" ref="account_template_3060101"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_306020101">
+        <field name="name">(-) PERDIDAS ACUMULADAS DE AÑOS ANTERIORES</field>
+        <field name="code">306020101</field>
+        <field name="user_type_id" ref="account.data_account_type_equity"/>
+        <field name="account_level">5</field>
+        <field name="reconcile" eval="True"/>
+        <field name="parent_id" ref="account_template_3060201"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+
+    <!--4-->
+    <!--Level 2-->
+    <record model="account.account.template" id="account_template_401">
+        <field name="name">INGRESOS OPERACIONALES</field>
+        <field name="code">401</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">2</field>
+        <field name="parent_id" ref="account_template_4"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_403">
+        <field name="name">OTROS INGRESOS</field>
+        <field name="code">403</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">2</field>
+        <field name="parent_id" ref="account_template_4"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <!--Level 3-->
+    <record model="account.account.template" id="account_template_40101">
+        <field name="name">INGRESOS DE ACTIVIDADES ORDINARIAS</field>
+        <field name="code">40101</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">3</field>
+        <field name="parent_id" ref="account_template_401"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_40301">
+        <field name="name">OTROS INGRESOS NO OPERACIONALES</field>
+        <field name="code">40301</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">3</field>
+        <field name="parent_id" ref="account_template_403"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <!--Level 4-->
+    <record model="account.account.template" id="account_template_4010101">
+        <field name="name">INGRESOS TARIFA 12%</field>
+        <field name="code">4010101</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">4</field>
+        <field name="parent_id" ref="account_template_40101"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_4030101">
+        <field name="name">OTROS INGRESOS NO ORDINARIOS</field>
+        <field name="code">4030101</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">4</field>
+        <field name="parent_id" ref="account_template_40301"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <!--Level 5-->
+    <record model="account.account.template" id="account_template_401010101">
+        <field name="name">VENTA BIENES 12%</field>
+        <field name="code">401010101</field>
+        <field name="user_type_id" ref="account.data_account_type_revenue"/>
+        <field name="reconcile" eval="True"/>
+        <field name="account_level">5</field>
+        <field name="parent_id" ref="account_template_4010101"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_403010109">
+        <field name="name">OTRAS RENTAS</field>
+        <field name="code">403010109</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="reconcile" eval="True"/>
+        <field name="account_level">5</field>
+        <field name="parent_id" ref="account_template_4030101"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <!--Level 6-->
+    <record model="account.account.template" id="account_template_40301010902">
+        <field name="name">OTRAS RENTAS - FALTAS Y MULTAS DE EMPLEADOS</field>
+        <field name="code">40301010902</field>
+        <field name="user_type_id" ref="account.data_account_type_revenue"/>
+        <field name="account_level">5</field>
+        <field name="parent_id" ref="account_template_403010109"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+
+    <!--5-->
+    <!--Level 2-->
+    <record model="account.account.template" id="account_template_501">
+        <field name="name">COSTO DE VENTAS Y PRODUCCIÓN</field>
+        <field name="code">501</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">2</field>
+        <field name="parent_id" ref="account_template_5"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_502">
+        <field name="name">GASTOS</field>
+        <field name="code">502</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">2</field>
+        <field name="parent_id" ref="account_template_5"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <!--Level 3-->
+    <record model="account.account.template" id="account_template_50101">
+        <field name="name">MATERIALES UTILIZADOS O PRODUCTOS VENDIDOS</field>
+        <field name="code">50101</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">3</field>
+        <field name="parent_id" ref="account_template_501"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_50202">
+        <field name="name">GASTOS ADMINISTRATIVOS</field>
+        <field name="code">50202</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">3</field>
+        <field name="parent_id" ref="account_template_502"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <!--Level 4-->
+    <record model="account.account.template" id="account_template_5010101">
+        <field name="name">MATERIALES UTILIZADOS</field>
+        <field name="code">5010101</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">4</field>
+        <field name="parent_id" ref="account_template_50101"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_5020201">
+        <field name="name">SUELDOS, SALARIOS Y DEMÁS REMUNERACIONES</field>
+        <field name="code">5020201</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">4</field>
+        <field name="parent_id" ref="account_template_50202"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_5020202">
+        <field name="name">APORTES A LA SEGURIDAD SOCIAL (INCLUIDO FONDO DE RESERVA)</field>
+        <field name="code">5020202</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">4</field>
+        <field name="parent_id" ref="account_template_50202"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_5020203">
+        <field name="name">BENEFICIOS SOCIALES E INDEMNIZACIONES</field>
+        <field name="code">5020203</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">4</field>
+        <field name="parent_id" ref="account_template_50202"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_5020227">
+        <field name="name">OTROS GASTOS</field>
+        <field name="code">5020227</field>
+        <field name="user_type_id" ref="data_account_type_view"/>
+        <field name="account_level">4</field>
+        <field name="parent_id" ref="account_template_50202"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <!--Level 5-->
+    <record model="account.account.template" id="account_template_501010101">
+        <field name="name">CONSUMO DE MATERIA PRIMA</field>
+        <field name="alternate_code">373</field>
+        <field name="code">501010101</field>
+        <field name="user_type_id" ref="account.data_account_type_direct_costs"/>
+        <field name="reconcile" eval="True"/>
+        <field name="account_level">5</field>
+        <field name="parent_id" ref="account_template_5010101"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_502020101">
+        <field name="name">ADM - SUELDOS, SALARIOS Y DEMÁS REMUNERACIONES</field>
+        <field name="code">502020101</field>
+        <field name="user_type_id" ref="data_account_type_other"/>
+        <field name="account_level">5</field>
+        <field name="parent_id" ref="account_template_5020201"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_502020101">
+        <field name="name">ADM - SUELDOS, SALARIOS Y DEMÁS REMUNERACIONES</field>
+        <field name="code">502020101</field>
+        <field name="user_type_id" ref="data_account_type_other"/>
+        <field name="account_level">5</field>
+        <field name="parent_id" ref="account_template_5020201"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_502020102">
+        <field name="name">ADM - HORAS EXTRAS</field>
+        <field name="code">502020102</field>
+        <field name="user_type_id" ref="data_account_type_other"/>
+        <field name="account_level">5</field>
+        <field name="parent_id" ref="account_template_5020201"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_502020201">
+        <field name="name">ADM - APORTE PATRONAL</field>
+        <field name="code">502020201</field>
+        <field name="user_type_id" ref="data_account_type_other"/>
+        <field name="account_level">5</field>
+        <field name="parent_id" ref="account_template_5020202"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_502020203">
+        <field name="name">ADM - FONDO DE RESERVA</field>
+        <field name="code">502020203</field>
+        <field name="user_type_id" ref="data_account_type_other"/>
+        <field name="account_level">5</field>
+        <field name="parent_id" ref="account_template_5020202"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_502020301">
+        <field name="name">ADM - DÉCIMO TERCERO</field>
+        <field name="code">502020301</field>
+        <field name="user_type_id" ref="data_account_type_other"/>
+        <field name="account_level">5</field>
+        <field name="parent_id" ref="account_template_5020203"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_502020302">
+        <field name="name">ADM - DÉCIMO CUARTO</field>
+        <field name="code">502020302</field>
+        <field name="user_type_id" ref="data_account_type_other"/>
+        <field name="account_level">5</field>
+        <field name="parent_id" ref="account_template_5020203"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_502022711">
+        <field name="name">ADM - OTRAS BONIFICACIONES</field>
+        <field name="code">502022711</field>
+        <field name="user_type_id" ref="data_account_type_other"/>
+        <field name="account_level">5</field>
+        <field name="parent_id" ref="account_template_5020227"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+    <record model="account.account.template" id="account_template_502022712">
+        <field name="name">ADM - OTROS GASTOS DEL PERSONAL</field>
+        <field name="code">502022712</field>
+        <field name="user_type_id" ref="data_account_type_other"/>
+        <field name="account_level">5</field>
+        <field name="parent_id" ref="account_template_5020227"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+
+    <!--Taxes-->
+    <!--Sale-->
+    <record id="account_tax_1" model="account.tax.template">
+        <field name="name">IVA COBRADO 12 %</field>
+        <field name="type_tax_use">sale</field>
+        <field name="type_tax">t1</field>
+        <field name="amount">12</field>
+        <field name="tax_group_id" ref="tax_group_taxes"/>
+        <field name="account_id" ref="account_template_201070101"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+
+    <!--Purchase-->
+    <record id="account_tax_2" model="account.tax.template">
+        <field name="name">IVA PAGADO 12 %</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="type_tax">t1</field>
+        <field name="amount">12</field>
+        <field name="tax_group_id" ref="tax_group_taxes"/>
+        <field name="account_id" ref="account_template_101050101"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+
+    <record id="account_tax_3" model="account.tax.template">
+        <field name="name">1% TRANSFERENCIA DE BIENES MUEBLES DE NATURALEZA CORPORAL</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="type_tax">t5</field>
+        <field name="ats_code">312</field>
+        <field name="amount">1</field>
+        <field name="tax_group_id" ref="tax_group_retentions"/>
+        <field name="account_id" ref="account_template_20107010413"/>
+        <field name="chart_template_id" ref="eliterp_chart_template"/>
+    </record>
+
+    <record id="eliterp_chart_template" model="account.chart.template">
+        <field name="property_account_receivable_id" ref="account_template_101020501"/>
+        <field name="property_account_payable_id" ref="account_template_201030101"/>
+        <field name="property_account_expense_categ_id" ref="account_template_501010101"/>
+        <field name="property_account_income_categ_id" ref="account_template_401010101"/>
+        <field name="expense_currency_exchange_account_id" ref="account_template_306020101"/>
+        <field name="income_currency_exchange_account_id" ref="account_template_306010101"/>
+    </record>
+</odoo>

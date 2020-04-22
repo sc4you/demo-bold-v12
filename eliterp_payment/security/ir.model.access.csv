@@ -1,0 +1,12 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_account_journal_system,account.journal system,account.model_account_journal,base.group_user,1,0,0,0
+access_account_payment_method system,account.payment.method system,account.model_account_payment_method,base.group_user,1,0,0,0
+
+access_payment_line,account.payment.line,model_account_payment_line,account.group_account_user,1,1,1,1
+access_account_pay_order_invoice,account.pay.order invoice,model_account_pay_order,base.group_user,1,1,1,1
+
+access_payment_special_invoice,account.payment.special.invoice,model_account_payment_special_invoice,account.group_account_invoice,1,1,1,1
+access_payment_special,account.payment.special,model_account_payment_special,account.group_account_invoice,1,1,1,1
+
+access_payment_cashier,account.payment.cashier,model_account_payment_cashier,account.group_account_user,1,1,1,1
+access_payment_cashier_invoice,account.payment.cashier invoice,model_account_payment_cashier,account.group_account_invoice,1,1,0,0

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Rules -->
+        <record id="sri_point_printing_rule_order_user" model="ir.rule">
+            <field name="name">Mostrar soló Puntos de impresión para Usuario (Ventas)</field>
+            <field name="model_id" ref="model_sale_order"/>
+            <field name="domain_force">[('id','in',user.point_printing_ids.ids)]</field>
+            <field name="groups" eval="[(4,ref('account.group_account_invoice'))]"/>
+        </record>
+    </data>
+</odoo>

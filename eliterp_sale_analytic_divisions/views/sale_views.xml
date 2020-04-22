@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record model="ir.ui.view" id="view_form_order_analytic_divisions">
+        <field name="name">view_form_order_analytic_divisions</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='analytic_account_id']" position="before">
+                <field name="company_division_id"
+                       attrs="{'readonly': [('invoice_count','!=',0), ('state','=','sale')]}"
+                       context="{'default_company_id': company_id}"/>
+                <field name="project_id"
+                       attrs="{'readonly': [('invoice_count','!=',0), ('state','=','sale')]}"
+                       domain="[('company_division_id', '=', company_division_id)]"
+                       context="{'default_company_division_id': company_division_id}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

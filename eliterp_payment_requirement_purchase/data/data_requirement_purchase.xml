@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <record model="payment.requirement.detail" id="requirement_detail_advance">
+            <field name="name">ANTICIPO A PROVEEDORES LOCALES</field>
+            <field name="account_id" ref="eliterp_chart_template.1_account_template_201030101"/>
+        </record>
+    </data>
+</odoo>

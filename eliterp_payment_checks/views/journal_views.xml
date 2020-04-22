@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_journal_checks" model="ir.ui.view">
+        <field name="name">view_journal_checks</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='type']" position="after">
+                <field name="customer_check"
+                       attrs="{'invisible': [('type', 'not in', ('bank', 'cash'))]}"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_account_bank_journal_checks" model="ir.ui.view">
+        <field name="name">view_account_bank_journal_checks</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account_check_printing.view_account_journal_form_inherited"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='outbound_payment_method_ids']" position="after">
+                <field name="start_check"
+                       attrs="{'invisible': [('check_printing_payment_method_selected', '=', False)],                     'required': [('check_printing_payment_method_selected', '=', True)], 'readonly': [('check_next_number', '!=', False)]}"/>
+                <label for="new_sequence_check" string="Actual/A actualizar" attrs="{'invisible': [('check_printing_payment_method_selected', '=', False)]}"/>
+                <div class="o_row" attrs="{'invisible': [('check_printing_payment_method_selected', '=', False)]}">
+                    <field name="current_sequence_check"/>
+                    <span>/</span>
+                    <field name="new_sequence_check"/>
+                    <button name="update_sequence_check"
+                            type="object"
+                            string="Actualizar"
+                            class="oe_link"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

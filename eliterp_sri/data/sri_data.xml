@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <!--Partner's SRI-->
+        <record id="partner_sri" model="res.partner">
+            <field name="name">SERVICIO DE RENTAS INTERNAS</field>
+            <field name="country_id" ref="base.ec"/>
+            <field name="state_id" ref="eliterp_base.res_country_state_17"/>
+            <field name="street">AV. AMAZONAS ENTRE UNIÓN NACIONAL DE PERIODISTAS</field>
+            <field name="street2">JOSÉ VILLALENGUA</field>
+            <field name="phone">023936300</field>
+            <field name="type_documentation">0</field>
+            <field name="documentation_number">1760013210001</field>
+            <field name="website">http://www.sri.gob.ec</field>
+            <field name="supplier" eval="True"/>
+            <field name="customer" eval="False"/>
+            <field name="image" type="base64" file="eliterp_sri/static/img/partner_sri.png"/>
+        </record>
+
+        <!--Partner's-->
+        <record id="partner_final_consumer" model="res.partner">
+            <field name="name">CONSUMIDOR FINAL</field>
+            <field name="country_id" ref="base.ec"/>
+            <field name="street">N.A.</field>
+            <field name="phone">022222222</field>
+            <field name="type_documentation">3</field>
+            <field name="documentation_number">9999999999999</field>
+            <field name="email">marior90cse@gmail.com</field>
+            <field name="supplier" eval="False"/>
+            <field name="customer" eval="True"/>
+        </record>
+
+        <!--Point of sale-->
+        <record id="main_establishment" model="sri.establishment">
+            <field name="name">ESTABLECIMIENTO MATRIZ (MY COMPANY)</field>
+            <field name="type">matrix</field>
+            <field name="establishment">001</field>
+            <field name="state_id" ref="eliterp_base.res_country_state_9"/>
+            <field name="street">DIRECCIÓN DE ESTABLECIMIENTO</field>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+        <record id="main_point_printing" model="sri.point.printing">
+            <field name="emission_point">001</field>
+            <field name="establishment_id" ref="main_establishment"/>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <!--Clients-->
+    <t t-extend="ClientLine">
+        <t t-jquery='.client-line' t-operation='replace'>
+         <tr class='client-line' t-att-data-id='partner.id'>
+             <td><t t-esc='partner.name' /></td>
+             <td><t t-esc='partner.documentation_number' /></td>
+             <td><t t-esc='partner.address'/></td>
+             <td><t t-esc='partner.email or "-"' /></td>
+         </tr>
+    </t>
+    </t>
+    <t t-extend="ClientListScreenWidget">
+         <t t-jquery='.client-list thead tr' t-operation='replace'>
+             <th>Nombre</th>
+             <th>No. Identificación</th>
+             <th>Dirección</th>
+             <th>Correo electrónico</th>
+         </t>
+    </t>
+
+    <t t-name="ClientDetailsEdit">
+        <t t-jquery='.client-details.edit' t-operation='replace'>
+            <section class='client-details edit'>
+                <div class='client-picture'>
+                    <t t-if='!partner.id'>
+                        <i class='fa fa-camera' role="img" aria-label="Imagen" title="Imagen"></i>
+                    </t>
+                    <t t-if='partner.id'>
+                        <img t-att-src='widget.partner_icon_url(partner.id)' alt="Empresa"/>
+                    </t>
+                    <input type='file' class='image-uploader'></input>
+                </div>
+                <input class='detail client-name' autofocus="autofocus" name='name' t-att-value='partner.name'
+                       placeholder='Nombre'></input>
+                <div class='edit-buttons'>
+                    <div class='button undo'><i class='fa fa-undo' role="img" aria-label="Descartar" title="Descartar"/></div>
+                    <div class='button save'><i class='fa fa-floppy-o' role="img" aria-label="Guardar" title="Guardar"/></div>
+                </div>
+                <div class='client-details-box clearfix'>
+                    <div class='client-details-left'>
+                        <div class='client-detail'>
+                            <span class='label'>* Tipo I.</span>
+                            <select class='detail client-address-country needsclick' name='type_documentation'>
+                                <!--TODO: Revisar si es mejor opción-->
+                                <t t-foreach="['RUC', 'Cédula', 'Pasaporte']" t-as="type_documentation">
+                                    <option t-att-value="type_documentation_index" t-esc="type_documentation"
+                                            t-att-selected="(type_documentation_index == partner.type_documentation) and 1 or None"/>
+                                </t>
+                            </select>
+                        </div>
+                        <div class='client-detail'>
+                            <span class='label'>Provincia</span>
+                            <select class='detail client-address-country needsclick' name='state_id'>
+                                <option value=''>Ninguno</option>
+                                <t t-foreach='widget.pos.states' t-as='state'>
+                                    <option t-att-value='state.id'
+                                            t-att-selected="partner.state_id ? ((state.id === partner.state_id[0]) ? true : undefined) : undefined">
+                                        <t t-esc='state.name'/>
+                                    </option>
+                                </t>
+                            </select>
+                        </div>
+                        <div class='client-detail'>
+                            <span class='label'>Cantón</span>
+                            <select class='detail client-address-country needsclick' name='canton_id'>
+                                <option value=''>Ninguno</option>
+                                <t t-foreach='widget.pos.cantons' t-as='canton'>
+                                    <option t-att-value='canton.id'
+                                            t-att-selected="partner.canton_id ? ((canton.id === partner.canton_id[0]) ? true : undefined) : undefined">
+                                        <t t-esc='canton.name'/>
+                                    </option>
+                                </t>
+                            </select>
+                        </div>
+                        <div class='client-detail'>
+                            <span class='label'>* Calle</span>
+                            <input class='detail client-address-street' name='street' t-att-value='partner.street || ""'
+                                   placeholder='Calle'></input>
+                        </div>
+                    </div>
+                    <div class='client-details-right'>
+                        <div class='client-detail'>
+                            <span class='label'>* No. I.</span>
+                            <input class='detail vat' name='documentation_number'
+                                   placeholder="RUC/Cédula"
+                                   t-att-value='partner.documentation_number || ""'></input>
+                        </div>
+                        <div class='client-detail'>
+                            <span class='label'>* Correo</span>
+                            <input class='detail client-email' name='email' type='email'
+                                   t-att-value='partner.email || ""'></input>
+                        </div>
+                        <div class='client-detail'>
+                            <span class='label'>* Teléfono</span>
+                            <input placeholder="p.e 042627171" class='detail client-phone' name='phone' type='tel'
+                                   t-att-value='partner.phone || ""'></input>
+                        </div>
+                    </div>
+
+                    <div class='client-comment'>
+                        <input class='detail client-comment'
+                               placeholder="Nota interna..."
+                               name='comment' type="text"
+                               t-att-value='partner.comment || ""'></input>
+                    </div>
+
+                </div>
+        </section>
+        </t>
+    </t>
+    <t t-name="ClientDetails">
+        <t t-jquery='.client-details' t-operation='replace'>
+            <section class='client-details'>
+                <div class='client-picture'>
+                    <img t-att-src='widget.partner_icon_url(partner.id)' alt="Logo de la empresa"/>
+                </div>
+                <div class='client-name'><t t-esc='partner.name' /></div>
+                <div class='edit-buttons'>
+                    <div class='button edit'><i class='fa fa-pencil-square' role="img" aria-label="Editar" title="Editar"/></div>
+                </div>
+                <div class='client-details-box clearfix'>
+                    <div class='client-details-left'>
+                        <div t-attf-class='client-detail #{widget.pos.states.length &lt;= 1 ? "oe_hidden" : ""}'>
+                            <span class='label'>Provincia</span>
+                            <t t-if='partner.state_id'>
+                                <span class='detail property_product_pricelist'><t t-esc='partner.state_id[1]'/></span>
+                            </t>
+                            <t t-if='!partner.state_id'>
+                                <span class='detail property_product_pricelist empty'>N/A</span>
+                            </t>
+                        </div>
+                        <div t-attf-class='client-detail #{widget.pos.cantons.length &lt;= 1 ? "oe_hidden" : ""}'>
+                            <span class='label'>Cantón</span>
+                            <t t-if='partner.canton_id'>
+                                <span class='detail property_product_pricelist'><t t-esc='partner.canton_id[1]'/></span>
+                            </t>
+                            <t t-if='!partner.canton_id'>
+                                <span class='detail property_product_pricelist empty'>N/A</span>
+                            </t>
+                        </div>
+                        <div class='client-detail'>
+                            <span class='label'>Dirección</span>
+                            <span class='detail client-address'><t t-esc='partner.address' /></span>
+                        </div>
+                    </div>
+                    <div class='client-details-right'>
+                        <div class='client-detail'>
+                            <span class='label'>No. I.</span>
+                            <span class='detail client-address'><t t-esc='partner.documentation_number' /></span>
+                        </div>
+                        <div class='client-detail'>
+                            <span class='label'>Correo</span>
+                            <span class='detail client-email'><t t-esc='partner.email' /></span>
+                        </div>
+                        <div class='client-detail'>
+                            <span class='label'>Teléfono</span>
+                            <span class='detail client-phone'><t t-esc='partner.phone' /></span>
+                        </div>
+                    </div>
+                </div>
+                <t t-if='partner.comment'>
+                    <span class='detail client-comment'><t t-esc='partner.comment'/></span>
+                </t>
+                <t t-if='!partner.comment'>
+                    <span class='detail client-comment empty'>N/A</span>
+                </t>
+            </section>
+        </t>
+    </t>
+
+    <!--Order-->
+    <t t-extend="OrderWidget">
+        <t t-jquery='.summary .line' t-operation="replace">
+        <div class="line">
+            <div class='entry total'>
+                <span class="badge">Subtotal: </span>
+                <span class="value">0.00 $</span>
+                <div class='subentry'>Taxes: <span class="value">0.00 $</span></div>
+                <span class="badge">Total: </span>
+                <span class="value">0.00 $</span>
+            </div>
+        </div>
+        </t>
+    </t>
+
+    <!--Product-->
+    <t t-extend="Product">
+        <t t-jquery=".product-name" t-operation="append">
+            <t t-if="product.default_code">
+               [<t t-esc="product.default_code"/>]
+            </t>
+        </t>
+    </t>
+
+    <!--Order Line-->
+    <t t-extend="Orderline">
+        <t t-jquery=".product-name" t-operation="append">
+            <t t-if="line.get_product().default_code">
+               [<t t-esc="line.get_product().default_code"/>]
+            </t>
+        </t>
+    </t>
+
+    <!--Payment Screen-->
+    <t t-extend="PaymentScreenWidget">
+        <!--Quitamos botón de Factura (Por defecto siempre activo)-->
+        <t t-jquery="div[t-attf-class*='js_invoice']" t-operation="replace">
+            <div class='button js_invoice'>
+                <i class='fa fa-file-text-o'/>
+                Factura
+            </div>
+        </t>
+    </t>
+</templates>

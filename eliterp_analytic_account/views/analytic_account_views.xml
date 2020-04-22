@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_tree_analytic_account" model="ir.ui.view">
+            <field name="name">view_tree_analytic_account</field>
+            <field name="model">account.analytic.account</field>
+            <field name="inherit_id" ref="analytic.view_account_analytic_account_list"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="replace">
+                    <field name="complete_name"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="view_form_analytic_account" model="ir.ui.view">
+            <field name="name">view_form_analytic_account</field>
+            <field name="model">account.analytic.account</field>
+            <field name="inherit_id" ref="analytic.view_account_analytic_account_form"/>
+            <field name="arch" type="xml">
+                <field name="group_id" position="replace"/>
+                <xpath expr="//h1" position="before">
+                    <h1>
+                        <field name="group_id" required="1"
+                               options="{'no_open':True,'no_create':True}"/>
+                    </h1>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

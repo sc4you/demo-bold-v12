@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--Searchs-->
+        <record id="view_search_payment_only_checks" model="ir.ui.view">
+            <field name="name">view_search_payment_only_checks</field>
+            <field name="model">account.payment</field>
+            <field name="arch" type="xml">
+                <search string="Buscar en...">
+                    <field name="check_number"/>
+                    <field name="beneficiary" string="Beneficiario/Girador"/>
+                    <separator/>
+                    <filter name="reconciled" string="Conciliado" domain="[('state_check', '=', 'reconciled')]"/>
+                    <filter name="deposited" string="Depositado" domain="[('state_check', '=', 'deposited')]"/>
+                    <separator/>
+                    <filter name="cancel" string="Anulado" domain="[('state_check', '=', 'cancel')]"/>
+                    <group expand="1" string="Agrupar por">
+                        <filter string="Banco de emisión" name="groupby_journal_id" domain="[]"
+                                context="{'group_by': 'journal_id'}"/>
+                        <filter string="Empresa" name="groupby_partner_id" domain="[]"
+                                context="{'group_by': 'partner_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!--Actions-->
+        <record id="action_payment_checks_inbound" model="ir.actions.act_window">
+            <field name="name">Cheques recibidos (cobros)</field>
+            <field name="res_model">account.payment</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('payment_method_code', '=', 'customer_check_printing'), ('payment_type', '=',
+                'inbound')]
+            </field>
+            <field name="search_view_id" ref="view_search_payment_only_checks"/>
+            <field name="help" type="html">
+                <p>
+                    Se registran los cheques recibidos desde un cobro.
+                </p>
+            </field>
+        </record>
+        <record id="action_payment_checks_outbound" model="ir.actions.act_window">
+            <field name="name">Cheques emitidos (pagos)</field>
+            <field name="res_model">account.payment</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('payment_method_code', '=', 'check_printing'), ('payment_type', '=', 'outbound')]
+            </field>
+            <field name="search_view_id" ref="view_search_payment_only_checks"/>
+            <field name="help" type="html">
+                <p>
+                    Se registran los cheques emitidos desde un pago.
+                </p>
+            </field>
+        </record>
+
+        <!--Menus-->
+        <menuitem id="menu_query_checks"
+                  name="Consulta de cheques"
+                  parent="eliterp_accountant.menu_bank_records"
+                  sequence="25"/>
+        <menuitem id="menu_payment_checks_inbound"
+                  parent="menu_query_checks"
+                  action="action_payment_checks_inbound"
+                  sequence="0"/>
+        <menuitem id="menu_payment_checks_outbound"
+                  parent="menu_query_checks"
+                  action="action_payment_checks_outbound"
+                  sequence="5"/>
+
+        <!--Views-->
+        <record id="view_tree_payment_checks_inbound" model="ir.ui.view">
+            <field name="name">view_tree_payment_checks_inbound</field>
+            <field name="model">account.payment</field>
+            <field name="arch" type="xml">
+                <tree create="false"
+                      edit="false"
+                      decoration-success="state_check=='deposited'"
+                      decoration-danger="state_check=='cancel'"
+                      decoration-bf="state_check=='deposited'"
+                >
+                    <field name="name"/>
+                    <field name="partner_id" string="Cliente"/>
+                    <field name="partner_bank_account_id"/>
+                    <field name="beneficiary" string="Girador"/>
+                    <field name="check_type"/>
+                    <field name="payment_date"/>
+                    <field name="check_date"/>
+                    <field name="amount"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                    <field name="state_check"/>
+                    <field name="state" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_form_payment_checks_inbound" model="ir.ui.view">
+            <field name="name">view_form_payment_checks_inbound</field>
+            <field name="model">account.payment</field>
+            <field name="arch" type="xml">
+                <form create="false" edit="false">
+                    <header>
+                        <field name="state_check" widget="statusbar" statusbar_visible="received,deposited"
+                               modifiers="{'readonly': true}"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="check_number"/>
+                            </h1>
+                        </div>
+                        <group col="4">
+                            <field name="partner_id" string="Cliente"/>
+                            <field name="beneficiary" string="Girador"/>
+                            <field name="amount"/>
+                            <field name="check_amount_in_words"/>
+                            <field name="state" invisible="1"/>
+                        </group>
+                        <group string="Datos del banco" col="4">
+                            <field name="partner_bank_account_id"/>
+                            <field name="payment_date"/>
+                            <field name="check_date"/>
+                            <field name="check_type"/>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_tree_payment_checks_outbound" model="ir.ui.view">
+            <field name="name">view_tree_payment_checks_outbound</field>
+            <field name="model">account.payment</field>
+            <field name="arch" type="xml">
+                <tree create="false"
+                      edit="false"
+                      decoration-danger="state_check=='cancel'"
+                      decoration-success="state_check in ['charged', 'reconciled']"
+                      decoration-bf="state_check=='reconciled'">
+                    <field name="check_number"/>
+                    <field name="journal_id"/>
+                    <field name="beneficiary"/>
+                    <field name="payment_date"/>
+                    <field name="check_date"/>
+                    <field name="amount"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                    <field name="state_check"/>
+                    <field name="state" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_form_payment_checks_outbound" model="ir.ui.view">
+            <field name="name">view_form_payment_checks_outbound</field>
+            <field name="model">account.payment</field>
+            <field name="arch" type="xml">
+                <form create="false" edit="false">
+                    <header>
+                        <field name="state_check" statusbar_visible="issued,charged"
+                               clickable="True"
+                               attrs="{'invisible': [('state_check', 'in', ['reconciled', 'cancel'])]}"
+                               widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="check_number"/>
+                            </h1>
+                        </div>
+                        <group col="4">
+                            <field name="partner_id" string="Proveedor"/>
+                            <field name="beneficiary"/>
+                            <field name="amount"/>
+                            <field name="check_amount_in_words"/>
+                            <field name="state" invisible="1"/>
+                        </group>
+                        <group string="Datos del banco" col="4">
+                            <field name="journal_id"/>
+                            <field name="payment_date"/>
+                            <field name="check_date"/>
+                            <field name="check_type"/>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!--Actions Views-->
+        <record model="ir.actions.act_window.view" id="action_view_tree_payment_checks_inbound">
+            <field eval="0" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_tree_payment_checks_inbound"/>
+            <field name="act_window_id" ref="action_payment_checks_inbound"/>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_view_form_payment_checks_inbound">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_form_payment_checks_inbound"/>
+            <field name="act_window_id" ref="action_payment_checks_inbound"/>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_view_tree_payment_checks_outbound">
+            <field eval="0" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_tree_payment_checks_outbound"/>
+            <field name="act_window_id" ref="action_payment_checks_outbound"/>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_view_form_payment_checks_outbound">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_form_payment_checks_outbound"/>
+            <field name="act_window_id" ref="action_payment_checks_outbound"/>
+        </record>
+    </data>
+</odoo>

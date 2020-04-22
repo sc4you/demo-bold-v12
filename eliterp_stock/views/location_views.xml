@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_form_location" model="ir.ui.view">
+        <field name="name">view_form_location</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//h2" position="after">
+                <label for="user_id"
+                       attrs="{'invisible':[('usage', '!=', 'internal')], 'required':[('usage', '=', 'internal')]}"
+                       class="oe_edit_only"/>
+                <h2>
+                    <field name="user_id"
+                           attrs="{'invisible':[('usage', '!=', 'internal')], 'required':[('usage', '=', 'internal')]}"
+                           options="{'no_create': True}"/>
+                </h2>
+            </xpath>
+            <field name="usage" position="after">
+                <field name="code"
+                       attrs="{'invisible':[('usage', '!=', 'internal')], 'required':[('usage', '=', 'internal')]}"/>
+            </field>
+
+            <!--Ubicaciones-->
+            <xpath expr="//group[@name='localization']" position="replace">
+                <group attrs="{'invisible':[('usage', '!=', 'internal')]}" string="Áreas"
+                       name="localization">
+                    <field name="area_ids" nolabel="1">
+                        <tree editable="top">
+                            <field name="name"/>
+                        </tree>
+                    </field>
+                </group>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

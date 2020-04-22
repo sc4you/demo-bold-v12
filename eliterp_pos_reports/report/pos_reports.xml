@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="pos_sale_report" model="ir.actions.report">
+            <field name="name">Ventas POS</field>
+            <field name="model">report.eliterp_pos_reports.report_posorder</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">eliterp_pos_reports.report_posorder</field>
+        </record>
+    </data>
+</odoo>

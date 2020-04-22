@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!--Actions-->
+    <record id="action_start_my_leaves" model="ir.actions.act_window">
+        <field name="name">Mis ausencias</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.leave</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="context">{'default_is_request': True}</field>
+        <field name="domain">[('user_id', '=', uid)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crear una solicitud de ausencia.
+            </p>
+            <p>
+                Una vez que haya guardado su solicitud de ausencia,
+                será enviada al departamento responsable para su validación.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+            id="menu_start_my_leaves"
+            parent="eliterp_start.menu_requirements"
+            action="action_start_my_leaves"
+            sequence="15"/>
+</odoo>

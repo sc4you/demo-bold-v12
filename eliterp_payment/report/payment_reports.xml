@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <delete id="account.action_report_payment_receipt" model="ir.actions.report"/>
+
+        <template id="report_payment_inbound">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="report_code">TESO-002-CE-V1</t>
+                    <t t-set="report_title">COBRO</t>
+                    <t t-set="flag">0</t><!--Sin RECIBÍ CONFORME en footer-->
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <div class="oe_structure"/>
+
+                            <div id="informations" class="row mt32">
+                                <div class="col-3">
+                                    <strong>Fecha de pago:</strong>
+                                    <p t-field="o.payment_date"/>
+                                </div>
+                                <div class="col-3">
+                                    <strong>Monto:</strong>
+                                    <p t-esc="&quot;$ %.2f&quot; %o.amount"/>
+                                </div>
+                                <div class="col-3" t-if="o.validate_internal_movement">
+                                    <strong>Movimiento:</strong>
+                                    <p t-field="o.internal_movement"/>
+                                </div>
+                                <div class="col-3" t-if="o.journal_id.type == 'bank' and o.internal_movement != 'deposit'">
+                                    <strong># Cuenta bancaria:</strong>
+                                    <p t-field="o.partner_bank_account_id.acc_number"/>
+                                </div>
+                            </div>
+                            <div id="informations" class="row mb32">
+                                <div class="col-6">
+                                    <strong>Concepto:</strong>
+                                    <p t-field="o.communication"/>
+                                </div>
+                            </div>
+
+
+                            <h5>
+                                Factura de cliente:&amp;nbsp;
+                                <strong>
+                                    <span t-field="o.partner_id"/>
+                                </strong>
+                            </h5>
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">No. Factura</th>
+                                        <th class="text-center">Fecha factura</th>
+                                        <th class="text-right">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="o.invoice_ids" t-as="invoice">
+                                        <td>
+                                            <span t-field="invoice.reference"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="invoice.date_invoice"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-esc="invoice.amount_total"
+                                                  t-options="{'widget': 'monetary', 'display_currency': invoice.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="oe_structure"/>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+        <template id="report_payment_outbound">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="report_code">TESO-001-COEG-V1</t>
+                    <t t-set="report_title">PAGO</t>
+                    <t t-set="flag">1</t>
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <div class="oe_structure"/>
+
+                            <div id="informations" class="row mt32">
+                                <div class="col-3">
+                                    <strong>Fecha de pago:</strong>
+                                    <p t-field="o.payment_date"/>
+                                </div>
+                                <div class="col-3">
+                                    <strong>Orden de pago:</strong>
+                                    <p t-field="o.pay_order_id"/>
+                                </div>
+                                <div class="col-3">
+                                    <strong>Forma de pago:</strong>
+                                    <p t-field="o.journal_id.name"/>
+                                </div>
+                                <div class="col-3">
+                                    <strong>Monto:</strong>
+                                    <p t-esc="&quot;$ %.2f&quot; %o.amount"/>
+                                </div>
+                            </div>
+
+                            <div id="informations" class="row">
+                                <div class="col-6">
+                                    <strong>Beneficiario:</strong>
+                                    <p t-field="o.beneficiary"/>
+                                </div>
+
+                                <div class="col-6" t-if="o.communication">
+                                    <strong>Concepto:</strong>
+                                    <p t-field="o.communication"/>
+                                </div>
+                            </div>
+
+                            <div id="informations" class="row mb32">
+                                <div class="col-3" t-if="o.transfer_code">
+                                    <strong>C. Transferencia:</strong>
+                                    <p t-field="o.transfer_code"/>
+                                </div>
+                            </div>
+
+                            <table t-if="o.type_pay_order != 'invoice'" class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Código cuenta</th>
+                                        <th class="text-center">Nombre cuenta</th>
+                                        <th class="text-right">Debe</th>
+                                        <th class="text-right">Haber</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="o.move_id.line_ids" t-as="line">
+                                        <td>
+                                            <span t-field="line.account_id.code"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.account_id.name"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="line.debit"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="line.credit"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+
+                            <h5 t-if="o.type_pay_order == 'invoice'">
+                                Facturas de proveedor:&amp;nbsp;
+                                <strong>
+                                    <span t-field="o.partner_id"/>
+                                </strong>
+                            </h5>
+                            <table t-if="o.type_pay_order == 'invoice'" class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">No. Factura</th>
+                                        <th class="text-center">Fecha factura</th>
+                                        <th class="text-center">Concepto</th>
+                                        <th class="text-right">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="o.invoice_ids" t-as="invoice">
+                                        <td>
+                                            <span t-field="invoice.reference"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="invoice.date_invoice"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="invoice.concept"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-esc="invoice.amount_total"
+                                                  t-options="{'widget': 'monetary', 'display_currency': invoice.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="clearfix" t-if="o.pay_order_id.comment">
+                                <h4 class="text-center">Notas y comentarios</h4>
+                                <div class="mb4">
+                                    <span t-field="o.pay_order_id.comment"/>
+                                </div>
+                            </div>
+
+                            <div class="oe_structure"/>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+        <template id="report_payment_transfer">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="report_code">CONT-004-TRAB-V1</t>
+                    <t t-set="report_title">TRANSFERENCIA BANCARIA</t>
+                    <t t-set="flag">0</t>
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <div class="oe_structure"/>
+
+                            <div id="informations" class="row mt32">
+                                <div class="col-4">
+                                    <strong>Fecha documento:</strong>
+                                    <p t-field="o.create_date" t-options='{"format": "dd/MM/yyyy"}'/>
+                                </div>
+                                <div class="col-4">
+                                    <strong>Fecha de transferencia:</strong>
+                                    <p t-field="o.payment_date"/>
+                                </div>
+                                <div class="col-4">
+                                    <strong>Monto:</strong>
+                                    <p t-esc="&quot;$ %.2f&quot; %o.amount"/>
+                                </div>
+                            </div>
+
+                            <div id="informations" class="row mb32">
+                                <div class="col-4">
+                                    <strong>Banco origen:</strong>
+                                    <p t-field="o.destination_journal_id"/>
+                                </div>
+                                <div class="col-4">
+                                    <strong>Transferir a:</strong>
+                                    <p t-field="o.destination_journal_id"/>
+                                </div>
+                                <div class="col-4" t-if="o.communication">
+                                    <strong>Concepto:</strong>
+                                    <p t-field="o.communication"/>
+                                </div>
+                            </div>
+
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Código cuenta</th>
+                                        <th class="text-center">Nombre cuenta</th>
+                                        <th class="text-right">Debe</th>
+                                        <th class="text-right">Haber</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="o.move_line_ids" t-as="line">
+                                        <td>
+                                            <span t-field="line.account_id.code"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.account_id.name"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="line.debit"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="line.credit"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="oe_structure"/>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+
+        <template id="report_payment">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="name" t-value="o.name"/>
+                    <t t-if="o.payment_type == 'inbound'">
+                        <t t-call="eliterp_payment.report_payment_inbound"/>
+                    </t>
+                    <t t-elif="o.payment_type == 'outbound'">
+                        <t t-call="eliterp_payment.report_payment_outbound"/>
+
+                    </t>
+                    <t t-else="">
+                        <t t-call="eliterp_payment.report_payment_transfer"/>
+
+                    </t>
+                </t>
+            </t>
+        </template>
+        <report
+                id="action_report_payment"
+                model="account.payment"
+                string="Recibo de pago"
+                report_type="qweb-pdf"
+                name="eliterp_payment.report_payment"
+                file="eliterp_payment.report_payment"
+                print_report_name="(object._get_report_filename())"
+                paperformat="eliterp_base.my_paperformat_a4_portrait"
+        />
+
+    </data>
+</odoo>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!--Emails-->
+        <record id="template_mail_stock_location" model="mail.template">
+            <field name="name">Correo para abastecimiento (bodega)</field>
+            <field name="model_id" ref="stock.model_stock_location"/>
+            <field name="email_from">${object.user_id.company_id.email|safe}</field>
+            <field name="email_to">${object.user_id.email}</field>
+            <field name="subject">Abastecimiento de bodega ${object.display_name}</field>
+            <field name="auto_delete" eval="True"/>
+            <field name="body_html" type="xml">
+                <table border="0" cellpadding="0" cellspacing="0"
+                       style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;">
+                    <tr>
+                        <td align="center">
+                            <table border="0" cellpadding="0" cellspacing="0" width="590"
+                                   style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
+                                <tbody>
+                                    <!-- CONTENT -->
+                                    <tr>
+                                        <td align="center" style="min-width: 590px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="590"
+                                                   style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                                <tr>
+                                                    <td valign="top" style="font-size: 13px;">
+                                                        <div>
+                                                            Productos con cantidad disponible menor al mínimo:
+                                                            <br/>
+                                                            <ul>
+                                                                % for product in ctx['products']
+                                                                <li>
+                                                                    <strong>${product['name']}</strong>
+                                                                    disponible ${product['qty_available']}
+                                                                </li>
+                                                                % endfor
+                                                            </ul>
+                                                            % if ctx.get('action_url'):
+                                                            <div style="margin: 16px 0px 16px 0px;">
+                                                                <a href="${ctx.get('action_url')}"
+                                                                   style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;">
+                                                                    Ir a bodega
+                                                                </a>
+                                                            </div>
+                                                            % endif
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:center;">
+                                                        <hr width="100%"
+                                                            style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </field>
+            <field name="user_signature" eval="False"/>
+        </record>
+
+        <!--Location Destination-->
+        <record id="template_mail_location_destination" model="mail.template">
+            <field name="name">Correo para bodega destino (Transferencia interna)</field>
+            <field name="model_id" ref="stock.model_stock_picking"/>
+            <field name="email_from">${object.create_uid.company_id.email|safe}</field>
+            <field name="email_to">${object.location_dest_id.user_id.email|safe}</field>
+            <field name="subject">Recepción de productos desde bodega ${object.location_id.display_name}</field>
+            <field name="auto_delete" eval="True"/>
+            <field name="body_html" type="xml">
+                <table border="0" cellpadding="0" cellspacing="0"
+                       style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;">
+                    <tr>
+                        <td align="center">
+                            <table border="0" cellpadding="0" cellspacing="0" width="590"
+                                   style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
+                                <tbody>
+                                    <!-- CONTENT -->
+                                    <tr>
+                                        <td align="center" style="min-width: 590px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="590"
+                                                   style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                                <tr>
+                                                    <td valign="top" style="font-size: 13px;">
+                                                        <div>
+                                                            Estimado ${object.location_dest_id.user_id.name} se generó una transferencia
+                                                            interna con referencia ${object.name} y fecha de creación ${ object.create_date.strftime('%d/%m/%Y') }:
+                                                            <br/>
+                                                            % if ctx.get('action_url'):
+                                                            <div style="margin: 16px 0px 16px 0px;">
+                                                                <a href="${ctx.get('action_url')}"
+                                                                   style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;">
+                                                                    Ir a movimiento
+                                                                </a>
+                                                            </div>
+                                                            % endif
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:center;">
+                                                        <hr width="100%"
+                                                            style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </field>
+            <field name="user_signature" eval="False"/>
+        </record>
+
+        <!--Warehouse Orderpoint-->
+        <record id="template_mail_warehouse_orderpoint" model="mail.template">
+            <field name="name">Notifiacion de Regla de abastecimiento</field>
+            <field name="model_id" ref="stock.model_stock_warehouse_orderpoint"/>
+            <field name="email_from">${object.company_id.email|safe}</field>
+            <field name="email_to">${object.location_id.user_id.email|safe}</field>
+            <field name="subject">Regla de abastecimiento ${object.name}</field>
+            <field name="auto_delete" eval="True"/>
+            <field name="body_html" type="xml">
+                <table border="0" cellpadding="0" cellspacing="0"
+                       style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;">
+                    <tr>
+                        <td align="center">
+                            <table border="0" cellpadding="0" cellspacing="0" width="590"
+                                   style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
+                                <tbody>
+                                    <!-- CONTENT -->
+                                    <tr>
+                                        <td align="center" style="min-width: 590px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="590"
+                                                   style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                                <tr>
+                                                    <td valign="top" style="font-size: 13px;">
+                                                        <div>
+                                                            Se generó Regla de abastecimiento ${object.name}:
+                                                            <br/>
+                                                            % if ctx.get('action_url'):
+                                                            <div style="margin: 16px 0px 16px 0px;">
+                                                                <a href="${ctx.get('action_url')}"
+                                                                   style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;">
+                                                                    Ir a Regla de abastecimiento
+                                                                </a>
+                                                            </div>
+                                                            % endif
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:center;">
+                                                        <hr width="100%"
+                                                            style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </field>
+            <field name="user_signature" eval="False"/>
+        </record>
+    </data>
+</odoo>

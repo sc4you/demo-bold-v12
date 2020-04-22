@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Multi-company -->
+        <record model="ir.rule" id="sri_authorization_multicompany">
+            <field name="name">Sri Authorization multi-company</field>
+            <field name="model_id" ref="model_sri_authorization"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]
+            </field>
+        </record>
+
+        <record model="ir.rule" id="sri_establishment_multicompany">
+            <field name="name">SRI Establishmentmulti-company</field>
+            <field name="model_id" ref="model_sri_establishment"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]
+            </field>
+        </record>
+
+        <!-- Rules -->
+        <record id="sri_point_printing_rule_user" model="ir.rule">
+            <field name="name">Mostrar soló Puntos de impresión para Usuario</field>
+            <field name="model_id" ref="model_sri_point_printing"/>
+            <field name="domain_force">[('id','in',user.point_printing_ids.ids)]</field>
+            <field name="groups" eval="[(4,ref('account.group_account_invoice'))]"/>
+        </record>
+
+        <record id="sri_point_printing_rule_manager" model="ir.rule">
+            <field name="name">Mostrar todos los Puntos de impresión para Gerente contable</field>
+            <field name="model_id" ref="model_sri_point_printing"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4,ref('account.group_account_manager'))]"/>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Delete data-->
+        <delete model="account.tax.group" id="account.tax_group_taxes"/>
+
+        <!-- Account Tax Group -->
+        <record id="tax_group_taxes" model="account.tax.group">
+            <field name="name">IMPUESTOS</field>
+            <field name="sequence">0</field>
+        </record>
+
+        <record id="tax_group_retentions" model="account.tax.group">
+            <field name="name">RETENCIONES</field>
+            <field name="sequence">0</field>
+        </record>
+    </data>
+</odoo>
+
+

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--Stock report-->
+        <template id="report_stock_quant">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="report_title">Reporte de Inventario</t>
+                    <t t-set="is_report" t-value="True"/>
+                    <t t-call="web.external_layout">
+                        <div class="page">
+
+                            <div id="informations" class="row mt32">
+                                <div class="col-6 bm-2">
+                                    <strong>Compañia:</strong>
+                                    <p t-field="user.company_id.name"/>
+                                </div>
+                                <div class="col-6 bm-2">
+                                    <strong>Fecha de corte:</strong>
+                                    <p t-field="o.date"/>
+                                </div>
+                            </div>
+                            <div id="informations" class="row mb32">
+                                <div class="col-6 bm-2">
+                                    <strong>Bodegas:</strong>
+                                    <p>
+                                        <t t-if="not o.location_ids">Todas las bodegas</t>
+                                        <t t-else=""
+                                           t-esc="', '.join(map(lambda x: x.display_name, o.location_ids))"/>
+                                    </p>
+                                </div>
+                                <div class="col-6 bm-2">
+                                    <strong>Productos:</strong>
+                                    <p>
+                                        <t t-if="not o.product_ids">Todos los productos</t>
+                                        <t t-else=""
+                                           t-esc="', '.join(map(lambda x: x.display_name, o.product_ids))"/>
+                                    </p>
+                                </div>
+                            </div>
+                            <t t-foreach="get_lines(o)" t-as="data">
+                                <caption class="text-center" t-if="data['products']">
+                                    Bodega:&amp;nbsp;
+                                    <strong>
+                                        <span t-esc="data['location']"/>
+                                    </strong>
+                                </caption>
+                                <table class="table table-sm" t-if="data['products']">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">Producto</th>
+                                            <th t-if="not o.audit" class="text-center">Disponible</th>
+                                            <th t-if="not o.audit" class="text-center">DxUP</th>
+                                            <th t-if="not o.audit" class="text-center">Reservado</th>
+                                            <th t-if="not o.audit" class="text-right">Para venta</th>
+                                            <th t-if="o.audit" class="text-right">Disponible físico</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr style="border-top: 1px solid black;" t-foreach="data['products']"
+                                            t-as="product">
+                                            <td class="col-4" style="border-top: 1px solid black;">
+                                                <span t-esc="product['name']"/>
+                                            </td>
+                                            <td class="col-2" style="border-top: 1px solid black;"
+                                                t-if="not o.audit">
+                                                <span t-esc="product['quantity']"/>
+                                            </td>
+                                            <td class="col-2" style="border-top: 1px solid black;"
+                                                t-if="not o.audit">
+                                                <span t-esc="product['qty_presentation']"/>
+                                            </td>
+                                            <td class="col-2" style="border-top: 1px solid black;"
+                                                t-if="not o.audit">
+                                                <span t-esc="product['reserved_quantity']"/>
+                                            </td>
+                                            <td class="col-2" style="border-top: 1px solid black;"
+                                                t-if="not o.audit">
+                                                <span t-esc="product['available_quantity']"/>
+                                            </td>
+                                            <td class="col-6" style="border-top: 1px solid black;"
+                                                t-if="o.audit">
+                                                <span>&amp;nbsp;</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </t>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+        <report
+                id="action_report_quant"
+                model="stock.quant.report"
+                string="Reporte de inventario"
+                report_type="qweb-pdf"
+                name="eliterp_stock_reports.report_stock_quant"
+                file="eliterp_stock_reports.report_stock_quant"
+                paperformat="eliterp_base.my_paperformat_a4_portrait"
+        />
+    </data>
+</odoo>
